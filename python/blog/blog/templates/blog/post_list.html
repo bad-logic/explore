@@ -6,22 +6,15 @@
 <body>
 
   <div>
-              <h1><a href="/">Django Blog</a></h1>
-          </div>
-
-          <div>
-              <p>published: 14.06.2014, 12:14</p>
-              <h2><a href="">My first post</a></h2>
-              <p>This is the first post in this blog. i'm  a tech enthusiast and i will be posting mostly about techs.</p>
-          </div>
-          <br>
-          <hr>
-          <br>
-          <div>
-              <p>published: 14.06.2014, 12:14</p>
-              <h2><a href="">My second post</a></h2>
-              <p>As i have alreasy said in my first blog, let us discuss about the new techs. you can ask me in the commment section.</p>
-          </div>
+    <h1><a href="/">Django Blog</a></h1>
+  </div>
+    {% for post in posts %}
+        <div>
+          <p>published: {{post.published_date}}</p>
+          <h2><a href="">{{post.title}}</a></h2>
+          <p>{{post.text|linebreaksbr}}</p>
+        </div>
+    {% endfor %}
 
 
 </body>

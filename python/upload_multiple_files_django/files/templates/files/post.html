@@ -1,0 +1,13 @@
+<!-- templates/post.html -->
+<h1>Create Post Page</h1>
+
+<form action="/post/" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <label>Album title</label>
+    <input type="text" name="title">
+    <br><br>
+    <label>Select Pictures: </label>
+    <input name="files" type="file" size="50" accept="image/*" multiple>
+    <button type="submit"> Upload </button>
+
+</form>

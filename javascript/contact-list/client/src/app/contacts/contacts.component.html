@@ -1,0 +1,50 @@
+<div class="container">
+    <h2 class="page-header">Add Contact</h2>
+    <form class="form-group" #ContactForm="ngForm" (submit)="addContact()">
+
+        <div class="form-group">
+            <label>First Name</label>
+            <input class="form-control" type="text" name="first_name" [(ngModel)]="newContact.first_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Last Name</label>
+            <input class="form-control" type="text" name="last_name" [(ngModel)]="newContact.last_name" required>
+        </div>
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input class="form-control" type="number" name="phone" [(ngModel)]="newContact.phone" required>
+        </div>
+        <input type="submit" [disabled]="ContactForm.invalid" class="btn btn-success" value="Add">
+    </form>
+</div>
+<div class="container">
+    <table class="table">
+        <thead>
+            <th>S.N</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let contact of contacts; let i = index">
+                <td>{{i+1}}</td>
+                <td contenteditable="true" (keyup)="allowChange($event,i,'first_name')">
+                    {{contact.first_name}}
+                </td>
+                <td contenteditable="true" (keyup)="allowChange($event,i,'last_name')">
+                    {{contact.last_name}}
+                </td>
+                <td contenteditable="true" (keyup)="allowChange($event,i,'phone')">
+                    {{contact.phone}}
+                </td>
+                <td>
+                    <button class="btn btn-info" [disabled]="!check(i)" (click)="update(contact._id,i)">Update</button>&nbsp;
+                    <button class="btn btn-danger" (click)="delete(contact._id,i)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,13 @@
+<div class="centered-content">
+    <div class="modal-box">
+        <h1 class="title">
+            Create a new List
+        </h1>
+        <input #newlistName class="input has-background-light is-medium" type="text" name="title" placeholder="List Name" required>
+        <br><br>
+        <div class="buttons is-right">
+            <button routerLink="/root" class="button is-medium">Cancel</button>
+            <button (click)="createNewList(newlistName.value)" class="button is-primary is-medium has-text-white">Create</button>
+        </div>
+    </div>
+</div>

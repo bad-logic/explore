@@ -15,11 +15,25 @@ class MyApp extends StatelessWidget{
           // shipped with material package we imported in line 1
           title:Text('EasyList'), // adds text in the appBar
         ),
-        body: Card(child: Column(children: <Widget>[
+        body:Column(
+          children: [
+            Container(
+              margin: EdgeInsets.all(10.0),
+              child:RaisedButton(
+                onPressed: (){},
+//              color: green,
+                child: Text('Add Product'),
+              ),
+            ),
+            Card(// built in widget shipped with material package we imported in line 1
+              child: Column(
+                children: <Widget>[
           Image.asset('assets/food.jpg'),
           Text('Food Paradise')
-        ],),),// built in widget shipped with material package
-        // we imported in line 1
+        ],
+        ),
+        ),],
+      ),
       ),
     );
   }

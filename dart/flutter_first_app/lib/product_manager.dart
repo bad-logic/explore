@@ -15,12 +15,11 @@ class ProductManager extends StatefulWidget{
     print("[ProductManager] createState()");
     return _ProductManagerState();
   }
-
 }
 
 class _ProductManagerState extends State<ProductManager>{
 
-  List <String> _products = [];
+  final List <String> _products = [];
 
   @override
   void initState() {
@@ -31,7 +30,6 @@ class _ProductManagerState extends State<ProductManager>{
 
   @override
   void didUpdateWidget(ProductManager oldWidget) {
-    // TODO: implement didUpdateWidget
     print("[ProductManager] didUpdateWidget()");
     super.didUpdateWidget(oldWidget);
   }

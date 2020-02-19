@@ -43,6 +43,7 @@ class _ProductManagerState extends State<ProductManager>{
         [Container(
             margin: EdgeInsets.all(10.0),
             child:RaisedButton(
+              color: Theme.of(context).primaryColor,
               onPressed: (){
                 setState((){// function to tell flutter that we are changing the state so it re-renders
                   _products.add('Advanced Food Tester');

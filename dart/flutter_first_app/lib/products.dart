@@ -18,9 +18,8 @@ class Products extends StatelessWidget{
     );
   }
 
-  @override
-  Widget build(BuildContext context){
-    print("[Products] build()");
+  Widget _buildProductList(){
+
     Widget isProduct = Center(child:Text('No Products found, Click Button to Add some'),);
     if(_products.length > 0) {
       isProduct = ListView
@@ -28,8 +27,15 @@ class Products extends StatelessWidget{
         itemBuilder: _buildProduct,
         itemCount: _products.length,
       );
-    } 
+    }
     return isProduct;
+
+  }
+
+  @override
+  Widget build(BuildContext context){
+    print("[Products] build()");
+    return _buildProductList();
   }
 
 }

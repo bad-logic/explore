@@ -7,7 +7,6 @@ void main() {
 //  debugPaintSizeEnabled = true; // for debugging the user interface
 //  debugPaintBaselinesEnabled = true; // shows green lines for text
 //  debugPaintPointersEnabled = true; // indicates where tap event occurred
-
   runApp(MyApp());
 }
 class MyApp extends StatelessWidget{
@@ -21,7 +20,7 @@ class MyApp extends StatelessWidget{
     print("[MyApp] build()");
 
     return MaterialApp(
-      debugShowMaterialGrid: true,//shows grid
+//      debugShowMaterialGrid: true,//shows grid
       theme:ThemeData(
         brightness: Brightness.dark,
         primarySwatch: Colors.deepOrange,

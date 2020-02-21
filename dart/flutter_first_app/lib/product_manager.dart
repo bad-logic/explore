@@ -49,8 +49,7 @@ class _ProductManagerState extends State<ProductManager>{
             child:ProductControl(_addProduct) // passing the function reference to another widget
               // so that we can call this function to add products
           ),
-          Container(// ListView needs to be inside the Container
-            height: 300.0,
+          Expanded(// takes the remaining space
             child:Products(_products),
           )
         ],

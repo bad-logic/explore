@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget{
           // shipped with material package we imported in line 1
           title:Text('EasyList'), // adds text in the appBar
         ),
-        body:ProductManager('Food Tester'),
+        body:ProductManager(),
         ),
       );
   }

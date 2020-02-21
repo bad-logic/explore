@@ -21,10 +21,15 @@ class Products extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     print("[Products] build()");
-    return ListView.builder( // returns the view while visible only no memory reserved for invisible items while scrolling
-      itemBuilder: _buildProduct,
-      itemCount: _products.length,
-    );
+    Widget isProduct = Center(child:Text('No Products found, Click Button to Add some'),);
+    if(_products.length > 0) {
+      isProduct = ListView
+          .builder( // returns the view while visible only no memory reserved for invisible items while scrolling
+        itemBuilder: _buildProduct,
+        itemCount: _products.length,
+      );
+    } 
+    return isProduct;
   }
 
 }

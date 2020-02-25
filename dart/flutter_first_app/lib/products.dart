@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 import './pages/product.dart';
 
-class Products extends StatelessWidget{
-
-  final List<Map<String ,String >> _products;
+class Products extends StatelessWidget {
+  final List<Map<String, String>> _products;
   final Function deleteProduct;
-  Products(this._products,this.deleteProduct){
+  Products(this._products, this.deleteProduct) {
     print("[Products] constructor()");
   }
 
-  Widget _buildProduct(BuildContext context, int index){
-
+  Widget _buildProduct(BuildContext context, int index) {
     return Card(
       child: Column(
         children: <Widget>[
@@ -18,46 +16,46 @@ class Products extends StatelessWidget{
           Text(_products[index]['title']),
           ButtonBar(
             alignment: MainAxisAlignment.center,
-            children:<Widget>[
-            FlatButton(
-              child:Text('Details'),
-              onPressed: ()=>Navigator.push<bool>(
+            children: <Widget>[
+              FlatButton(
+                child: Text('Details'),
+                onPressed: () => Navigator.push<bool>(
                   context,
                   MaterialPageRoute(
-                      builder: (BuildContext context)=>ProductPage(_products[index]['image'],_products[index]['title']),
+                    builder: (BuildContext context) => ProductPage(
+                        _products[index]['image'], _products[index]['title']),
                   ),
-              ).then((bool value){// push returns a future similar to promise in js
-                if(value){
-                  deleteProduct(index);
-                }
-              }),
-            )
-          ]
-        ,)
-      ],
-    ),
-  );
-
+                ).then((bool value) {
+                  // push returns a future similar to promise in js
+                  if (value) {
+                    deleteProduct(index);
+                  }
+                }),
+              )
+            ],
+          )
+        ],
+      ),
+    );
   }
 
-  Widget _buildProductList(){
-
-    Widget isProduct = Center(child:Text('No Products found, Click Button to Add some'),);
-    if(_products.length > 0) {
-      isProduct = ListView
-          .builder( // returns the view while visible only no memory reserved for invisible items while scrolling
+  Widget _buildProductList() {
+    Widget isProduct = Center(
+      child: Text('No Products found, Click Button to Add some'),
+    );
+    if (_products.length > 0) {
+      isProduct = ListView.builder(
+        // returns the view while visible only no memory reserved for invisible items while scrolling
         itemBuilder: _buildProduct,
         itemCount: _products.length,
       );
     }
     return isProduct;
-
   }
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     print("[Products] build()");
     return _buildProductList();
   }
-
 }

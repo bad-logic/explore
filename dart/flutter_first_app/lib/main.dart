@@ -64,7 +64,11 @@ class _MyAppState extends State<MyApp>{
           );
         }
         return null;
-
+      },
+      onUnknownRoute: (RouteSettings settings){// will execute whenever onGenerateRoute fails to generate routes
+          return MaterialPageRoute(
+            builder:(BuildContext context) => ProductsPage(_products,_addProduct,_deleteProduct),
+          );
       },
     );
   }

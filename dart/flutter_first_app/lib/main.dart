@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+//import 'package:flutter/rendering.dart';
 import './pages/products_admin.dart';
 import './pages/product.dart';
 import './pages/products.dart';
-import './pages/auth.dart';
+//import './pages/auth.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true; // for debugging the user interface

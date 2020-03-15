@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import './pages/product.dart';
 
 class Products extends StatelessWidget {
-  final List<Map<String, String>> _products;
-  final Function deleteProduct;
-  Products(this._products, this.deleteProduct) {
+
+  final List<Map<String, dynamic>> _products;
+
+  Products(this._products) {
     print("[Products] constructor()");
   }
 
@@ -20,12 +20,6 @@ class Products extends StatelessWidget {
               FlatButton(
                 child: Text('Details'),
                 onPressed: () => Navigator.pushNamed<bool>(context, 'product/$index')
-                .then((bool value) {
-                  // push returns a future similar to promise in js
-                  if (value) {
-                    deleteProduct(index);
-                  }
-                }),
               )
             ],
           )
@@ -36,7 +30,7 @@ class Products extends StatelessWidget {
 
   Widget _buildProductList() {
     Widget isProduct = Center(
-      child: Text('No Products found, Click Button to Add some'),
+      child: Text('No Products Available!!!!'),
     );
     if (_products.length > 0) {
       isProduct = ListView.builder(

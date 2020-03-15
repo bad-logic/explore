@@ -49,9 +49,9 @@ class _MyAppState extends State<MyApp>{
           brightness: Brightness.light,
           primarySwatch: Colors.deepOrange,
           accentColor: Colors.deepPurple),
-      home: AuthPage(),
+//      home: AuthPage(),
       routes:{// global registry of routes
-//        '/':(BuildContext context) => ProductsPage(_products),
+        '/':(BuildContext context) => ProductsPage(_products),
           'admin':(BuildContext context) => ProductsAdminPage(_addProduct,_deleteProduct),
       },
       onGenerateRoute: (RouteSettings settings){// this code runs for unregistered routes

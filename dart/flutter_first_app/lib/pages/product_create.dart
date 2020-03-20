@@ -56,7 +56,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
             textColor: Colors.white,
             onPressed: () {
               widget.addProduct(_product);
-              Navigator.pushReplacementNamed(context, '/'); // pressing back button will not navigate here
+              Navigator.pushReplacementNamed(context, '/products'); // pressing back button will not navigate here
              },
           ),
         ],

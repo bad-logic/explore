@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './price_tag.dart';
 
 class Products extends StatelessWidget {
   final List<Map<String, dynamic>> _products;
@@ -27,21 +28,12 @@ class Products extends StatelessWidget {
                 SizedBox(
                   width: 10.0,
                 ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 2.5, horizontal: 6.0),
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).accentColor,
-                      borderRadius: BorderRadius.circular(5.0)),
-                  child: Text(
-                    "\$ " + _products[index]['price'].toString(),
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
+                PriceTag(_products[index]['price'].toString()),
               ],
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(vertical:2.5,horizontal: 6.0),
+            padding: EdgeInsets.symmetric(vertical: 2.5, horizontal: 6.0),
             decoration: BoxDecoration(
               border: Border.all(color: Colors.grey, width: 1.0),
               borderRadius: BorderRadius.circular(5.0),
@@ -51,10 +43,20 @@ class Products extends StatelessWidget {
           ButtonBar(
             alignment: MainAxisAlignment.center,
             children: <Widget>[
-              FlatButton(
-                  child: Text('Details'),
-                  onPressed: () =>
-                      Navigator.pushNamed<bool>(context, 'product/$index'))
+              IconButton(
+                icon: Icon(Icons.info),
+                color: Theme.of(context).accentColor,
+                tooltip: 'Details',
+                onPressed: () =>
+                    Navigator.pushNamed<bool>(context, 'product/$index'),
+              ),
+              IconButton(
+                  icon: Icon(
+                    Icons.favorite_border,
+                  ),
+                  color: Colors.red,
+                  tooltip: 'Favourite',
+                  onPressed: () => null),
             ],
           )
         ],

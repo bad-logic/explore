@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import './pages/products_admin.dart';
 import './pages/product.dart';
 import './pages/products.dart';
-//import './pages/auth.dart';
+import './pages/auth.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true; // for debugging the user interface
@@ -52,8 +52,9 @@ class _MyAppState extends State<MyApp>{
           accentColor: Colors.deepPurple),
 //      home: AuthPage(),
       routes:{// global registry of routes
-        '/':(BuildContext context) => ProductsPage(_products),
-          'admin':(BuildContext context) => ProductsAdminPage(_addProduct,_deleteProduct),
+        '/':(BuildContext context) => AuthPage(),
+        '/products':(BuildContext context) => ProductsPage(_products),
+          '/admin':(BuildContext context) => ProductsAdminPage(_addProduct,_deleteProduct),
       },
       onGenerateRoute: (RouteSettings settings){// this code runs for unregistered routes
         final List<String> pathElements = settings.name.split('/');

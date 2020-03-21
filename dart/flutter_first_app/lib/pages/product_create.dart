@@ -13,7 +13,44 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
+
   final Map<String, dynamic> _product = {'image': 'assets/food.jpg'};
+
+  Widget _buildTitleTextField(){
+    return TextField(
+      decoration: InputDecoration(labelText: 'Product Title'),
+      onChanged: (String value) {
+        setState(() {
+          _product['title'] = value;
+        });
+      },
+    );
+  }
+
+  Widget  _buildPriceTextField(){
+    return TextField(
+      keyboardType: TextInputType.number,
+      decoration: InputDecoration(labelText: 'Product Price'),
+      onChanged: (String value) {
+        setState(() {
+          _product['price'] = double.parse(value);
+        });
+      },
+    );
+  }
+
+  Widget  _buildDescriptionTextField(){
+    return TextField(
+      maxLines: 5,
+      decoration: InputDecoration(labelText: 'Product Description'),
+      onChanged: (String value) {
+        setState(() {
+          _product['description'] = value;
+        });
+      },
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -21,32 +58,9 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
       margin: EdgeInsets.all(10.0),
       child: ListView(
         children: <Widget>[
-          TextField(
-            decoration: InputDecoration(labelText: 'Product Title'),
-            onChanged: (String value) {
-              setState(() {
-                _product['title'] = value;
-              });
-            },
-          ),
-          TextField(
-            keyboardType: TextInputType.number,
-            decoration: InputDecoration(labelText: 'Product Price'),
-            onChanged: (String value) {
-              setState(() {
-                _product['price'] = double.parse(value);
-              });
-            },
-          ),
-          TextField(
-            maxLines: 5,
-            decoration: InputDecoration(labelText: 'Product Description'),
-            onChanged: (String value) {
-              setState(() {
-                _product['description'] = value;
-              });
-            },
-          ),
+          _buildTitleTextField(),
+          _buildDescriptionTextField(),
+          _buildPriceTextField(),
           SizedBox(
             height: 10.0,
           ), // doesnot render anything just occupies space

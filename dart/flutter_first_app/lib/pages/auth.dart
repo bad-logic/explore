@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AuthPage extends StatefulWidget {
@@ -20,12 +21,10 @@ class _AuthPage extends State<AuthPage> {
         image: AssetImage('assets/background.jpg'));
   }
 
-  Widget _buildEmailTextField(){
+  Widget _buildEmailTextField() {
     return TextField(
       decoration: InputDecoration(
-          labelText: 'E-Mail',
-          filled: true,
-          fillColor: Colors.white),
+          labelText: 'E-Mail', filled: true, fillColor: Colors.white),
       onChanged: (String value) {
         setState(() {
           _user['email'] = value;
@@ -34,12 +33,10 @@ class _AuthPage extends State<AuthPage> {
     );
   }
 
-  Widget _buildPasswordTextField(){
+  Widget _buildPasswordTextField() {
     return TextField(
       decoration: InputDecoration(
-          labelText: 'Password',
-          filled: true,
-          fillColor: Colors.white),
+          labelText: 'Password', filled: true, fillColor: Colors.white),
       onChanged: (String value) {
         setState(() {
           _user['password'] = value;
@@ -48,7 +45,7 @@ class _AuthPage extends State<AuthPage> {
     );
   }
 
-  Widget _buildAcceptTerms(){
+  Widget _buildAcceptTerms() {
     return SwitchListTile(
       value: _acceptTerms,
       onChanged: (bool value) {
@@ -62,6 +59,11 @@ class _AuthPage extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final double deviceWidth = MediaQuery.of(context).size.width;
+    // 768 px is the break point for the device width
+    final double targetDeviceWidth = deviceWidth > 768.0 ? 450.0 :  deviceWidth * 0.95;
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Login'),
@@ -70,9 +72,11 @@ class _AuthPage extends State<AuthPage> {
         decoration: BoxDecoration(
           image: _buildBackgroundImage(),
         ),
-          padding: EdgeInsets.all(10.0),
-          child: Center(
-            child: SingleChildScrollView(
+        padding: EdgeInsets.all(10.0),
+        child: Center(
+          child: SingleChildScrollView(
+            child: Container(
+              width: targetDeviceWidth,
               child: Column(
                 children: <Widget>[
                   _buildEmailTextField(),
@@ -96,6 +100,7 @@ class _AuthPage extends State<AuthPage> {
               ),
             ),
           ),
+        ),
       ),
     );
   }

@@ -54,9 +54,15 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
 
   @override
   Widget build(BuildContext context) {
+    final double deviceWidth = MediaQuery.of(context).size.width; // getting the device current width
+
+    final double finalDeviceWidth = deviceWidth > 768.0 ? 450.0 : deviceWidth * 0.95;
+    final double finalPadding = deviceWidth - finalDeviceWidth;
+
     return Container(
       margin: EdgeInsets.all(10.0),
-      child: ListView(
+      child: ListView( // listview items always take the full available space by default
+        padding:EdgeInsets.symmetric(horizontal:finalPadding/2,), // adding padding restricts the listView from using full width
         children: <Widget>[
           _buildTitleTextField(),
           _buildDescriptionTextField(),

@@ -3,14 +3,13 @@ import './price_tag.dart';
 import './../ui_elements/title_default.dart';
 import './address_tag.dart';
 
-class ProductCard extends StatelessWidget{
-
-  final Map<String,dynamic> product;
+class ProductCard extends StatelessWidget {
+  final Map<String, dynamic> product;
   final int index;
 
-  ProductCard(this.product,this.index);
+  ProductCard(this.product, this.index);
 
-  Widget _buildTitlePriceRow(){
+  Widget _buildTitlePriceRow() {
     return Container(
       padding: EdgeInsets.only(top: 10.0),
       child: Row(
@@ -26,7 +25,7 @@ class ProductCard extends StatelessWidget{
     );
   }
 
-  Widget _buildActionsButtons(BuildContext context){
+  Widget _buildActionsButtons(BuildContext context) {
     return ButtonBar(
       alignment: MainAxisAlignment.center,
       children: <Widget>[
@@ -34,8 +33,7 @@ class ProductCard extends StatelessWidget{
           icon: Icon(Icons.info),
           color: Theme.of(context).accentColor,
           tooltip: 'Details',
-          onPressed: () =>
-              Navigator.pushNamed<bool>(context, 'product/$index'),
+          onPressed: () => Navigator.pushNamed<bool>(context, 'product/$index'),
         ),
         IconButton(
             icon: Icon(
@@ -62,6 +60,4 @@ class ProductCard extends StatelessWidget{
       ),
     );
   }
-
-
 }

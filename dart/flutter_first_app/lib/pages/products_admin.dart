@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import './product_create.dart';
+import './product_form.dart';
 import './product_list.dart';
 
 class ProductsAdminPage extends StatelessWidget {
+  final List<Map<String, dynamic>> _products;
+  final Function _addProduct, _deleteProduct,_updateProduct;
+  ProductsAdminPage(this._products, this._addProduct, this._updateProduct, this._deleteProduct);
 
-  final Function _addProduct, _deleteProduct;
-  ProductsAdminPage(this._addProduct,this._deleteProduct);
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +43,10 @@ class ProductsAdminPage extends StatelessWidget {
             ),
           ),
           body: TabBarView(
-            children: <Widget>[ProductCreatePage(_addProduct), ProductListPage()],
+            children: <Widget>[
+              ProductFormPage(addProduct: _addProduct),
+              ProductListPage(_updateProduct,_products)
+            ],
           ),
         ));
   }

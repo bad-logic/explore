@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app1/scoped-models/products.dart';
 //import 'package:flutter/rendering.dart';
 import './pages/products_admin.dart';
 import './pages/product.dart';
 import './pages/products.dart';
 import './pages/auth.dart';
-import './models/product.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true; // for debugging the user interface
@@ -26,64 +27,50 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Product> _products = [];
-
-  void _addProduct(Product product) {
-    setState(() {
-      _products.add(product);
-    });
-  }
-
-  void _updateProduct(Product product, int index) {
-    setState(() {
-      _products[index] = product;
-    });
-  }
-
-  void _deleteProduct(int index) {
-    setState(() {
-      _products.removeAt(index);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     // returns a widget
     print("[MyApp] build()");
-
-    return MaterialApp(
+    return ScopedModel <ProductsModel> (
+      model: ProductsModel(),// provide the instance of Products model for entire application
+      // same instance of that scoped model must be used for the entire app because we work on the same lists
+      // one instance is created while starting the app and that instance is passed down to the
+      // materialApp and all its child widgets
+      child: MaterialApp(
 //      debugShowMaterialGrid: true,//shows grid
-      theme: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.deepOrange,
-        accentColor: Colors.deepPurple,
-        buttonColor: Colors.deepPurple,
-      ),
+        theme: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.deepOrange,
+          accentColor: Colors.deepPurple,
+          buttonColor: Colors.deepPurple,
+        ),
 //      home: AuthPage(),
-      routes: {
-        // global registry of routes
-        '/': (BuildContext context) => AuthPage(),
-        '/products': (BuildContext context) => ProductsPage(_products),
-        '/admin': (BuildContext context) => ProductsAdminPage(
-            _products, _addProduct, _updateProduct, _deleteProduct),
-      },
-      onGenerateRoute: (RouteSettings settings) {
-        // this code runs for unregistered routes
-        final List<String> pathElements = settings.name.split('/');
-        if (pathElements[0] == 'product') {
-          final int index = int.parse(pathElements[1]);
-          return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(_products[index]),
+        routes: {
+          // global registry of routes
+          '/': (BuildContext context) => AuthPage(),
+          '/products': (BuildContext context) => ProductsPage(),
+          '/admin': (BuildContext context) => ProductsAdminPage(),
+        },
+        onGenerateRoute: (RouteSettings settings) {
+          // this code runs for unregistered routes
+          final List<String> pathElements = settings.name.split('/');
+          if (pathElements[0] == 'product') {
+            final int index = int.parse(pathElements[1]);
+            return MaterialPageRoute<bool>(
+              builder: (BuildContext context) => ProductPage(index),
+            );
+          }
+          return null;
+        },
+        onUnknownRoute: (RouteSettings settings) {
+          // will execute whenever onGenerateRoute fails to generate routes
+          return MaterialPageRoute(
+            builder: (BuildContext context) => ProductsPage(),
           );
-        }
-        return null;
-      },
-      onUnknownRoute: (RouteSettings settings) {
-        // will execute whenever onGenerateRoute fails to generate routes
-        return MaterialPageRoute(
-          builder: (BuildContext context) => ProductsPage(_products),
-        );
-      },
+        },
+      ),
     );
   }
+
 }

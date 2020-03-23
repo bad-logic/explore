@@ -1,29 +1,28 @@
 import 'package:flutter/material.dart';
 import './product_form.dart';
 import './../models/product.dart';
+import 'package:scoped_model/scoped_model.dart';
+import './../scoped-models/products.dart';
 
 class ProductListPage extends StatelessWidget {
-  final List<Product> _products;
-  final Function _updateProduct, _deleteProduct;
-  ProductListPage(this._products, this._updateProduct, this._deleteProduct);
 
-  Widget _buildListTile(BuildContext context, int index) {
+
+  Widget _buildListTile(BuildContext context, int index, Product product,
+      Function selectProduct) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: AssetImage(_products[index].imageUrl),
+        backgroundImage: AssetImage(product.imageUrl),
       ),
-      title: Text(_products[index].title),
-      subtitle: Text('\$' + _products[index].price.toString()),
+      title: Text(product.title),
+      subtitle: Text('\$' + product.price.toString()),
       trailing: IconButton(
         icon: Icon(Icons.edit),
         onPressed: () {
+          selectProduct(index);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
-                return ProductFormPage(
-                    updateProduct: _updateProduct,
-                    product: _products[index],
-                    index: index);
+                return ProductFormPage();
               },
             ),
           );
@@ -32,8 +31,8 @@ class ProductListPage extends StatelessWidget {
     );
   }
 
-  Widget _buildProductList() {
-
+  Widget _buildProductList(
+      Function deleteProduct, List<Product> products, Function selectProduct) {
     return ListView.builder(
       // returns the view while visible only no memory reserved for invisible items while scrolling
       itemBuilder: (BuildContext context, int index) {
@@ -45,28 +44,35 @@ class ProductListPage extends StatelessWidget {
           direction: DismissDirection.endToStart,
           onDismissed: (DismissDirection direction) {
             if (direction == DismissDirection.endToStart) {
-              _deleteProduct(index);
+              // select the index of product on which dismiss action is triggered
+              selectProduct(index);
+              // delete that product
+              deleteProduct();
             }
           },
           child: Column(
             children: <Widget>[
-              _buildListTile(context, index),
+              _buildListTile(context, index, products[index], selectProduct),
               Divider(),
             ],
           ),
         );
       },
-      itemCount: _products.length,
+      itemCount: products.length,
     );
-
   }
 
   @override
   Widget build(BuildContext context) {
-    return _products.length > 0
-        ? _buildProductList()
-        : Center(
-            child: Text('All Available Products'),
-          );
+    return ScopedModelDescendant<ProductsModel>(
+      builder: (BuildContext context, Widget child, ProductsModel model) {
+        return model.products.length > 0
+            ? _buildProductList(
+                model.deleteProduct, model.products, model.selectProduct)
+            : Center(
+                child: Text('No Available Products'),
+              );
+      },
+    );
   }
 }

@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import './../widgets/helpers/ensure_visible.dart';
+import './../models/product.dart';
 
 class ProductFormPage extends StatefulWidget {
   final Function addProduct, updateProduct;
   final int index;
-  final Map<String, dynamic> product;
+  final Product product;
   ProductFormPage(
       {this.addProduct, this.updateProduct, this.product, this.index});
 
@@ -17,7 +18,8 @@ class ProductFormPage extends StatefulWidget {
 }
 
 class _ProductFormPageState extends State<ProductFormPage> {
-  final Map<String, dynamic> _product = {'image': 'assets/food.jpg'};
+
+  final Map<String, dynamic> _product = {'imageUrl': 'assets/food.jpg'};
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final titleFocusNode = FocusNode();
   final descriptionFocusNode = FocusNode();
@@ -29,7 +31,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
       child: TextFormField(
         focusNode: titleFocusNode, // also tell we are using our own focusNode
         decoration: InputDecoration(labelText: 'Product Title'),
-        initialValue: widget.product == null ? '' : widget.product['title'],
+        initialValue: widget.product == null ? '' : widget.product.title,
         validator: (String value) {
           if (value.isEmpty || value.length < 5) {
             return 'Title is Required and contain at least five characters'; // error message
@@ -52,7 +54,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         keyboardType: TextInputType.number,
         decoration: InputDecoration(labelText: 'Product Price'),
         initialValue:
-            widget.product == null ? '' : widget.product['price'].toString(),
+            widget.product == null ? '' : widget.product.price.toString(),
         validator: (String value) {
           if (value.isEmpty ||
               !RegExp(r'^(?:[1-9]\d*|0)?(?:[.,]\d+)?$').hasMatch(value)) {
@@ -77,7 +79,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         focusNode: descriptionFocusNode,
         decoration: InputDecoration(labelText: 'Product Description'),
         initialValue:
-            widget.product == null ? '' : widget.product['description'],
+            widget.product == null ? '' : widget.product.description,
         validator: (String value) {
           if (value.isEmpty || value.length < 5) {
             return 'Description is Required and contain at least five characters'; // error message
@@ -124,8 +126,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 child: Text('Save'),
                 textColor: Colors.white,
                 onPressed: () {
-                  print('here');
-                  print(_product);
                   if (!_formKey.currentState.validate()) {
                     //validator function runs at this point and then only shows error
                     return; // in case of false donot run below code
@@ -135,9 +135,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   // the onSaved() methods are fired on each Form Fields
                   print(_product);
                   if (widget.addProduct == null) {
-                    widget.updateProduct(_product, widget.index);
+                    widget.updateProduct(Product(title:_product['title'],description: _product['description'],price: _product['price'],imageUrl: _product['imageUrl']), widget.index);
                   } else {
-                    widget.addProduct(_product);
+                    widget.addProduct(Product(title:_product['title'],description: _product['description'],price: _product['price'],imageUrl: _product['imageUrl']));
                   }
                   Navigator.pushReplacementNamed(context,
                       '/products'); // pressing back button will not navigate here

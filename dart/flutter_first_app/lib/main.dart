@@ -4,6 +4,7 @@ import './pages/products_admin.dart';
 import './pages/product.dart';
 import './pages/products.dart';
 import './pages/auth.dart';
+import './models/product.dart';
 
 void main() {
 //  debugPaintSizeEnabled = true; // for debugging the user interface
@@ -25,15 +26,15 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Map<String, dynamic>> _products = [];
+  List<Product> _products = [];
 
-  void _addProduct(Map<String, dynamic> product) {
+  void _addProduct(Product product) {
     setState(() {
       _products.add(product);
     });
   }
 
-  void _updateProduct(Map<String, dynamic> product, int index) {
+  void _updateProduct(Product product, int index) {
     setState(() {
       _products[index] = product;
     });
@@ -72,11 +73,7 @@ class _MyAppState extends State<MyApp> {
         if (pathElements[0] == 'product') {
           final int index = int.parse(pathElements[1]);
           return MaterialPageRoute<bool>(
-            builder: (BuildContext context) => ProductPage(
-                _products[index]['image'],
-                _products[index]['title'],
-                _products[index]['price'],
-                _products[index]['description']),
+            builder: (BuildContext context) => ProductPage(_products[index]),
           );
         }
         return null;

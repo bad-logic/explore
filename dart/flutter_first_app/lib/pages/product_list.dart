@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import './product_form.dart';
+import './../models/product.dart';
 
 class ProductListPage extends StatelessWidget {
-  final List<Map<String, dynamic>> _products;
+  final List<Product> _products;
   final Function _updateProduct, _deleteProduct;
   ProductListPage(this._products, this._updateProduct, this._deleteProduct);
 
   Widget _buildListTile(BuildContext context, int index) {
     return ListTile(
       leading: CircleAvatar(
-        backgroundImage: AssetImage(_products[index]['image']),
+        backgroundImage: AssetImage(_products[index].imageUrl),
       ),
-      title: Text(_products[index]['title']),
-      subtitle: Text('\$' + _products[index]['price'].toString()),
+      title: Text(_products[index].title),
+      subtitle: Text('\$' + _products[index].price.toString()),
       trailing: IconButton(
         icon: Icon(Icons.edit),
         onPressed: () {

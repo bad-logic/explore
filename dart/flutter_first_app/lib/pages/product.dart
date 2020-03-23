@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:async'; // future is imported from this library
 import './../widgets/ui_elements/title_default.dart';
+import './../models/product.dart';
 
 class ProductPage extends StatelessWidget {
-  final String _imageUrl, _title,_description;
-  final double price;
+  final Product product;
 
-  ProductPage(this._imageUrl, this._title,this.price,this._description);
+  ProductPage(this.product);
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +26,16 @@ class ProductPage extends StatelessWidget {
         appBar: AppBar(
           // creates an appBar. AppBar is also a built in widget
           // shipped with material package we imported in line 1
-          title: Text(_title), // adds text in the appBar
+          title: Text(product.title), // adds text in the appBar
         ),
         body: Column(
           // mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Image.asset(_imageUrl),
+            Image.asset(product.imageUrl),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: DefaultTitle(_title),
+              child: DefaultTitle(product.title),
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -45,12 +45,12 @@ class ProductPage extends StatelessWidget {
                   margin:EdgeInsets.symmetric(horizontal: 5.0),
                   child: Text('|',style:TextStyle(color: Colors.grey)),
                 ),
-                Text('\$'+price.toString(),style: TextStyle(fontFamily: 'Oswald',color:Colors.grey),),
+                Text('\$'+product.price.toString(),style: TextStyle(fontFamily: 'Oswald',color:Colors.grey),),
               ],
             ),
             Container(
               padding: EdgeInsets.all(10.0),
-              child: Text(_description,textAlign: TextAlign.center,),
+              child: Text(product.description,textAlign: TextAlign.center,),
             ),
           ],
         ),

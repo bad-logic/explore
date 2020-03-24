@@ -86,7 +86,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
     );
   }
 
-  void _formSubmit(Function saveProduct) {
+  void _formSubmit({Function saveProduct, Product product}) {
     if (!_formKey.currentState.validate()) {
       //validator function runs at this point and then only shows error
       return; // in case of false donot run below code
@@ -98,7 +98,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
         title: _product['title'],
         description: _product['description'],
         price: _product['price'],
-        imageUrl: _product['imageUrl']));
+        imageUrl: _product['imageUrl'],
+        isFavourite: product == null ? false : product.isFavourite));
     Navigator.pushReplacementNamed(
         context, // pressing back button will not navigate to this page
         '/products');
@@ -140,7 +141,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 child: Text('Save'),
                 textColor: Colors.white,
                 onPressed: () {
-                  _formSubmit(saveProduct);
+                  _formSubmit(saveProduct: saveProduct, product: product);
                 },
               ),
 //          Center(

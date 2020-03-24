@@ -70,7 +70,7 @@ class ProductListPage extends StatelessWidget {
             ? _buildProductList(
                 model.deleteProduct, model.products, model.selectProduct)
             : Center(
-                child: Text('No Available Products'),
+                child: Text('You don\'t have any products'),
               );
       },
     );

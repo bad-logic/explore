@@ -57,7 +57,8 @@ class ProductsModel extends Model {
     updateProduct(newProduct);
     // notify scoped model for change of data and it updates the view in real time
     // runs builder method for only widgets that are wrapped with ScopedModelDescendant
-    notifyListeners(); // call if the change is happening in the same page and it must be reflected in real time
+//    notifyListeners(); // call if the change is happening in the same page and it must be reflected in real time
+  // already called in updateProduct();
   }
 
   void deleteProduct() {

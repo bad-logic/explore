@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import './../widgets/helpers/ensure_visible.dart';
 import './../models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
-import './../scoped-models/products.dart';
+import './../scoped-models/main.dart';
 
 class ProductFormPage extends StatefulWidget {
   @override
@@ -166,8 +166,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
         int index = model.selectedProductIndex;
         return model.selectedProductIndex == null // case while adding product
             ? _buildPageContent(saveProduct: model.addProduct)

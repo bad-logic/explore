@@ -4,7 +4,7 @@ import 'package:flutter_app1/models/product.dart';
 import 'dart:async'; // future is imported from this library
 import './../widgets/ui_elements/title_default.dart';
 import 'package:scoped_model/scoped_model.dart';
-import './../scoped-models/products.dart';
+import './../scoped-models/main.dart';
 
 class ProductPage extends StatelessWidget {
   final int index;
@@ -21,8 +21,8 @@ class ProductPage extends StatelessWidget {
         // returning true here will trigger another pop action which will try to pop home page
         // and the app crashes
       },
-      child: ScopedModelDescendant<ProductsModel>(
-        builder: (BuildContext context, Widget child, ProductsModel model) {
+      child: ScopedModelDescendant<MainModel>(
+        builder: (BuildContext context, Widget child, MainModel model) {
           final Product product = model.products[index];
           return Scaffold(
             // Scaffold widget creates a page. Scaffold is built in

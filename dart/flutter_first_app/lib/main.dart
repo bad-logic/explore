@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app1/scoped-models/products.dart';
+import 'package:flutter_app1/scoped-models/main.dart';
 //import 'package:flutter/rendering.dart';
 import './pages/products_admin.dart';
 import './pages/product.dart';
 import './pages/products.dart';
 import './pages/auth.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 
 void main() {
 //  debugPaintSizeEnabled = true; // for debugging the user interface
@@ -32,8 +33,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // returns a widget
     print("[MyApp] build()");
-    return ScopedModel <ProductsModel> (
-      model: ProductsModel(),// provide the instance of Products model for entire application
+    return ScopedModel <MainModel> (
+      model: MainModel(),// provide the instance of Products model for entire application
       // same instance of that scoped model must be used for the entire app because we work on the same lists
       // one instance is created while starting the app and that instance is passed down to the
       // materialApp and all its child widgets

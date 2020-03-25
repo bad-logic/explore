@@ -7,6 +7,8 @@ import './../../models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProductCard extends StatelessWidget {
+
+
   final Product product;
   final int index;
 
@@ -51,6 +53,7 @@ class ProductCard extends StatelessWidget {
               onPressed: () {
                 model.selectProduct(index);
                 model.toggleProductFavouriteStatus();
+                model.unselectProduct();
               });
         })
       ],
@@ -66,6 +69,8 @@ class ProductCard extends StatelessWidget {
           Image.asset(product.imageUrl),
           _buildTitlePriceRow(),
           AddressTag('Kathmandu, Nepal'),
+          Text(product.userEmail),
+          Text(product.userId),
           _buildActionsButtons(context),
         ],
       ),

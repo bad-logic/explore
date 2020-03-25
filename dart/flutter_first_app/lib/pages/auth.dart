@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import './../scoped-models/main.dart';
+
 
 class AuthPage extends StatefulWidget {
   @override
@@ -11,8 +14,7 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPage extends State<AuthPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final Map<String, dynamic> _user = {'email': '', 'password': ''};
-  bool _acceptTerms = false;
+  final Map<String, dynamic> _user = {'email': null, 'password': null,'acceptTerms': false};
 
   DecorationImage _buildBackgroundImage() {
     return DecorationImage(
@@ -26,9 +28,12 @@ class _AuthPage extends State<AuthPage> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'E-Mail', filled: true, fillColor: Colors.white),
+      keyboardType: TextInputType.emailAddress,
       validator: (String value) {
-        if (value.isEmpty) {
-          return 'Email is Required';
+        if (value.isEmpty ||
+            !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?")
+                .hasMatch(value)) {
+          return 'Please enter a valid email';
         }
         return null;
       },
@@ -44,9 +49,10 @@ class _AuthPage extends State<AuthPage> {
     return TextFormField(
       decoration: InputDecoration(
           labelText: 'Password', filled: true, fillColor: Colors.white),
+      obscureText: true,
       validator: (String value) {
-        if (value.isEmpty) {
-          return 'Password is required';
+        if (value.isEmpty || value.length < 6) {
+          return 'Password invalid';
         }
         return null;
       },
@@ -60,23 +66,24 @@ class _AuthPage extends State<AuthPage> {
 
   Widget _buildAcceptTerms() {
     return SwitchListTile(
-      value: _acceptTerms,
+      value: _user['acceptTerms'],
       onChanged: (bool value) {
         setState(() {
-          _acceptTerms = value;
+          _user['acceptTerms'] = value;
         });
       },
       title: Text('Accept Terms'),
     );
   }
 
-  _submitForm(){
-    if (!_formKey.currentState.validate()) {// returns true if all validator function of forms fields are true
+  _submitForm(Function login){
+    if (!_formKey.currentState.validate() || !_user['acceptTerms']) {// returns true if all validator function of forms fields are true
       //validator function runs at this point and then only shows error
       return; // in case of false donot run below code
     }
     _formKey.currentState
         .save();
+    login(email:_user['email'],password:_user['password']);
     Navigator.pushReplacementNamed(context,
         '/products'); // pressing back button will not navigate here
   }
@@ -113,11 +120,15 @@ class _AuthPage extends State<AuthPage> {
                         // doesnot render anything just occupies space
                         height: 10.0,
                       ),
-                      RaisedButton(
-                        child: Text('Login'),
-                        textColor: Colors.white,
-                        onPressed: () {
-                          _submitForm();
+                      ScopedModelDescendant<MainModel>(
+                        builder: (BuildContext context, Widget child, MainModel model){
+                          return RaisedButton(
+                            child: Text('Login'),
+                            textColor: Colors.white,
+                            onPressed: () {
+                              _submitForm(model.login);
+                            },
+                          );
                         },
                       ),
                     ],

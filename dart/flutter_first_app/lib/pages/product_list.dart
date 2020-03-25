@@ -8,7 +8,7 @@ class ProductListPage extends StatelessWidget {
 
 
   Widget _buildListTile(BuildContext context, int index, Product product,
-      Function selectProduct) {
+      MainModel model) {
     return ListTile(
       leading: CircleAvatar(
         backgroundImage: AssetImage(product.imageUrl),
@@ -18,21 +18,21 @@ class ProductListPage extends StatelessWidget {
       trailing: IconButton(
         icon: Icon(Icons.edit),
         onPressed: () {
-          selectProduct(index);
+          model.selectProduct(index);
           Navigator.of(context).push(
             MaterialPageRoute(
               builder: (BuildContext context) {
                 return ProductFormPage();
               },
             ),
-          );
+          ).then((value) => model.unselectProduct());
         },
       ),
     );
   }
 
   Widget _buildProductList(
-      Function deleteProduct, List<Product> products, Function selectProduct) {
+      MainModel model) {
     return ListView.builder(
       // returns the view while visible only no memory reserved for invisible items while scrolling
       itemBuilder: (BuildContext context, int index) {
@@ -45,20 +45,21 @@ class ProductListPage extends StatelessWidget {
           onDismissed: (DismissDirection direction) {
             if (direction == DismissDirection.endToStart) {
               // select the index of product on which dismiss action is triggered
-              selectProduct(index);
+              model.selectProduct(index);
               // delete that product
-              deleteProduct();
+              model.deleteProduct();
+              model.unselectProduct();
             }
           },
           child: Column(
             children: <Widget>[
-              _buildListTile(context, index, products[index], selectProduct),
+              _buildListTile(context, index, model.products[index], model),
               Divider(),
             ],
           ),
         );
       },
-      itemCount: products.length,
+      itemCount: model.products.length,
     );
   }
 
@@ -68,7 +69,7 @@ class ProductListPage extends StatelessWidget {
       builder: (BuildContext context, Widget child, MainModel model) {
         return model.products.length > 0
             ? _buildProductList(
-                model.deleteProduct, model.products, model.selectProduct)
+                model)
             : Center(
                 child: Text('You don\'t have any products'),
               );

@@ -7,6 +7,7 @@ import 'package:scoped_model/scoped_model.dart';
 import './../scoped-models/main.dart';
 
 class ProductPage extends StatelessWidget {
+
   final int index;
 
   ProductPage(this.index);

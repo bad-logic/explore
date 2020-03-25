@@ -86,7 +86,8 @@ class _ProductFormPageState extends State<ProductFormPage> {
     );
   }
 
-  void _formSubmit({Function saveProduct, Product product}) {
+  void _formSubmit(
+      {Function saveProduct, Product product, Function unselectProduct}) {
     if (!_formKey.currentState.validate()) {
       //validator function runs at this point and then only shows error
       return; // in case of false donot run below code
@@ -94,18 +95,18 @@ class _ProductFormPageState extends State<ProductFormPage> {
     _formKey.currentState
         .save(); // when we call the save method on the state returned by the global key,
     // the onSaved() methods are fired on each Form Fields
-    saveProduct(Product(
-        title: _product['title'],
-        description: _product['description'],
-        price: _product['price'],
-        imageUrl: _product['imageUrl'],
-        isFavourite: product == null ? false : product.isFavourite));
+    saveProduct(_product['title'], _product['price'], _product['description'],
+        _product['imageUrl']);
     Navigator.pushReplacementNamed(
-        context, // pressing back button will not navigate to this page
-        '/products');
+            context, // pressing back button will not navigate to this page
+            '/products')
+        .then((value) => unselectProduct()); // incase the producted is selected eg: while updating product
+    // also error in case of adding product if we don't pass the unselectProduct function to this build method
+    // no harm in setting selectedProductIndex to null in case of adding product since it is already null beforehand
   }
 
-  Widget _buildPageContent({Product product, Function saveProduct}) {
+  Widget _buildPageContent(
+      {Product product, Function saveProduct, Function unselectProduct}) {
     final double deviceWidth =
         MediaQuery.of(context).size.width; // getting the device current width
 
@@ -141,7 +142,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 child: Text('Save'),
                 textColor: Colors.white,
                 onPressed: () {
-                  _formSubmit(saveProduct: saveProduct, product: product);
+                  _formSubmit(
+                      saveProduct: saveProduct,
+                      product: product,
+                      unselectProduct: unselectProduct);
                 },
               ),
 //          Center(
@@ -170,7 +174,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
       builder: (BuildContext context, Widget child, MainModel model) {
         int index = model.selectedProductIndex;
         return model.selectedProductIndex == null // case while adding product
-            ? _buildPageContent(saveProduct: model.addProduct)
+            ? _buildPageContent(
+                saveProduct: model.addProduct,
+                unselectProduct: model.unselectProduct)
             : Scaffold(
                 // for editing product we need to return scaffold because adding product is inside the tab that already
                 // is inside page but while editing we push to the new page but that page won't have body only the form fields
@@ -180,7 +186,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 ),
                 body: _buildPageContent(
                     saveProduct: model.updateProduct,
-                    product: model.products[index]), // for editing product
+                    product: model.products[index],
+                    unselectProduct:
+                        model.unselectProduct), // for editing product
               );
       },
     );

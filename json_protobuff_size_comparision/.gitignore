@@ -2,5 +2,5 @@ node_modules/
 protoc-3.12.4-linux-x86_64/
 binarydata
 data.json
-protobuf.js
+schema_pb.js
 package-lock.json

@@ -8,6 +8,21 @@ services:
       context: ./
     volumes:
       - ./src:/usr/app/src
-    ports:
-      - 8000:5000
+    labels:
+      # enable traefik for this service
+      # exposing manually since exposedbydefault=false in docker-compose.traefik.yaml
+      - traefik.enable=true
+      # define the port inside of the docker service to use
+      - traefik.http.services.app.loadbalancer.server.port=5000
+      # make traefik use this domain in http
+      - traefik.http.routers.app-http.entrypoints=http
+      - traefik.http.routers.app-http.rule=HOST(`yourdomain.com`)
+      # use the traefik public network
+      - traefik.docker.network=traefik-public
+    networks:
+      - traefik-public
     restart: always
+
+networks:
+  traefik-public:
+    external: true

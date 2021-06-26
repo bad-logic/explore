@@ -8,7 +8,7 @@ WORKDIR /usr/app
 # use curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 RUN pip install poetry==1.1.7
 
-# poetry comes with built in virtual environment but we don't need them inside containers
+# poetry comes with built in virtual environment which contradicts the sole purpose of using the docker
 # so disabling them
 RUN poetry config virtualenvs.create false
 

@@ -1,0 +1,25 @@
+# docker-compose uses docker-compose and docker-compose.override files by default
+# it will first use docker-compose file and then on top of that
+# it will apply configurations from override.yaml file if the -f tag with filename is not provided
+# if -f tag and filename is provided it will only use configurations from that file
+# this file is for development only. in production explicitly use -f tag with filename to apply configs
+# from docker-compose.yaml file else configs will be overriden by below configs
+
+version: "3"
+
+services:
+  fastapi-service:
+    image: badlog/fastapi
+    container_name: fastapi-server-container
+    build:
+      context: ./
+    volumes:
+      - ./src:/usr/app/src
+    ports:
+      - 8000:5000
+    restart: always
+
+# to override docker complaining about network public but does not exist
+networks:
+  traefik-public:
+    external: false

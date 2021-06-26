@@ -80,3 +80,20 @@ volumes:
 networks:
   traefik-public:
     external: true
+#
+#
+#
+#
+#
+# running this file will throw error since we donot have USERNAME and HASHED_PASSWORD variable not set
+# go inside folder containing this docker-compose files and execute the following commands in terminal
+# RUN THE FOLLOWING TO SET USERNAME AND HASHED_PASSWORD variable
+# export USERNAME=admin
+# export PASSWORD=yourpassword
+# openssl passwd -apr1 $PASSWORD => generates hashed value of your password
+# export HASHED_PASSWORD=$(openssl passwd -apr1 $PASSWORD)
+#
+#
+#
+#
+#

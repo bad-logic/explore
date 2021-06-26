@@ -2,7 +2,7 @@
 name = "fastapi_traefik"
 version = "0.1.0"
 description = ""
-authors = ["roshan <mailme.roshanbhattarai@gmail.com>"]
+authors = ["roshan"]
 
 [tool.poetry.dependencies]
 python = "^3.8"

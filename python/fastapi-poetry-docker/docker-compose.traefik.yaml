@@ -14,6 +14,35 @@ services:
 
       # mount the volume to store the certificates
       - traefik-public-certificates:/certificates
+    labels:
+      # Enable traefik for this service, to make it available in the public network
+      - traefik.enable=true
+      # define the port inside of the docker service to use
+      - traefik.http.services.traefik-dashboard.loadbalancer.server.port=8080
+      # make traefik use this domain in http
+      - traefik.http.routers.traefik-dashboard-http.entrypoints=http
+      - traefik.http.routers.traefik-dashboard-http.rule=HOST(`subdomain.yourdomain.com`)
+      # use the traefik-public network
+      - traefik.docker.network=traefik.public
+      # traefik-https the actual router using https
+      - traefik.http.routers.traefik-dashboard-https.entrypoints=https
+      - traefik.http.routers.traefik-dashboard-https.rule=HOST(`subdomain.yourdomain.com`)
+      - traefik.http.routers.traefik-dashboard-https.tsl=true
+      # use the "le" (Let's Encrypt) resolver
+      - traefik.http.routers.traefik-dashboard-https.tls.certresolver=le
+      # use the special traefik service api@internal with the web UI/Dashboard
+      - traefik.http.routers.traefik-dashboard-https.service=api@internal
+      # https-redirect middleware to redirect http to https
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
+      # middleware to redirect http to https
+      - traefik.http.routers.traefik-dashboard-http.middlewares=https-redirect
+      # admin-auth middleware with http basic auth
+      # using the environment variables USERNAME and HASHED_PASSWORD
+      - traefik.http.middlewares.admin-auth.basicauth.users=${USERNAME?variable not set}:{HASHED_PASSWORD?variable not set}
+      # enable http basic auth, using the middleware created above
+      - traefik.http.routers.traefik-dashboard-https.middlewares=admin-auth
+
     command:
       # enable docker in traefik, so that it reads labels form docker services
       - --providers.docker
@@ -36,6 +65,9 @@ services:
       - --accesslog
       #   enable the trafik log, for configurations and errors
       - --log
+
+      # Enable the DASHBOARD  and API
+      - --api
     networks:
       - traefik-public
     restart: always

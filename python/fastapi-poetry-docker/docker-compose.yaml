@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  fastapi-server:
+    image: badlog/fastapi
+    container_name: fastapi-server-container
+    build:
+      context: ./
+    volumes:
+      - ./src:/usr/app/src
+    ports:
+      - 5000:5000
+    restart: on-failure

@@ -34,6 +34,9 @@ services:
       - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
       # middleware to redirect http to https
       - traefik.http.routers.app-http.middlewares=https-redirect
+
+      # reusing the basic auth middleware created in docker-compose.traefik file
+      - traefik.http.routers.app-https.middlewares=admin-auth
     networks:
       - traefik-public
     restart: always

@@ -1,5 +1,34 @@
+let eventBus = new Vue();
+
+Vue.component("product-tabs", {
+  props: {
+    reviews: {
+      type: Array,
+      required: true,
+    },
+  },
+  template: `
+    <div>
+        <span class="tab" :class="{activeTab: selectedTab===tab}" v-for="(tab,index) in tabs":key="index" @click="selectedTab = tab">{{tab}}</span>
+        <div v-show="selectedTab === 'Reviews'">
+            <p v-if="!reviews.length">There are no review yet</p>
+            <ul v-else>
+                <li v-for="review in reviews">
+                    <p>name:{{review.name}}</p>
+                    <p>review:{{review.review}}</p>
+                    <p>rating:{{review.rating}}</p>
+                </li>
+            </ul>
+        </div>
+    <product-review v-show="selectedTab === 'Make a Review'"></product-review>
+    </div>`,
+  data: () => ({
+    tabs: ["Reviews", "Make a Review"],
+    selectedTab: "Reviews",
+  }),
+});
 Vue.component("product-review", {
-    template: `<form class="review-form" @submit.prevent="onSubmit">
+  template: `<form class="review-form" @submit.prevent="onSubmit">
         <p v-if="errors.length">
             <b>Please correct the following error(s).</b>
             <ul>
@@ -31,49 +60,49 @@ Vue.component("product-review", {
 
     </form>
     `,
-    data: () => {
-        return {
-            name: null,
-            review: null,
-            rating: null,
-            errors: []
+  data: () => {
+    return {
+      name: null,
+      review: null,
+      rating: null,
+      errors: [],
+    };
+  },
+  methods: {
+    onSubmit: function () {
+      this.errors.length = 0; // clearing the errors array
+      if (this.name && this.review && this.rating) {
+        const productReview = {
+          name: this.name,
+          review: this.review,
+          rating: this.rating,
+        };
+        eventBus.$emit("review-submit", productReview);
+        this.name = null;
+        this.review = null;
+        this.rating = null;
+      } else {
+        if (!this.name) {
+          this.errors.push("Name is required");
         }
+        if (!this.review) {
+          this.errors.push("Review is required");
+        }
+        if (!this.rating) {
+          this.errors.push("Rating is required");
+        }
+      }
     },
-    methods: {
-        onSubmit: function () {
-            this.errors.length = 0; // clearing the errors array
-            if (this.name && this.review && this.rating) {
-                const productReview = {
-                    name: this.name,
-                    review: this.review,
-                    rating: this.rating,
-                }
-                this.$emit('review-submit', productReview)
-                this.name = null;
-                this.review = null;
-                this.rating = null
-            } else {
-                if (!this.name) {
-                    this.errors.push("Name is required");
-                }
-                if (!this.review) {
-                    this.errors.push("Review is required");
-                }
-                if (!this.rating) {
-                    this.errors.push("Rating is required");
-                }
-            }
-        }
-    }
-})
+  },
+});
 Vue.component("product", {
-    props: {
-        premium: {
-            type: Boolean,
-            required: true
-        }
+  props: {
+    premium: {
+      type: Boolean,
+      required: true,
     },
-    template: `<div class="product">
+  },
+  template: `<div class="product">
     <div class="product-image">
       <img v-bind:src="image" :alt="alternativeText" />
     </div>
@@ -106,88 +135,78 @@ Vue.component("product", {
         Add to Cart
       </button>
     </div>
-    <div>
-        <h2>Reviews</h2>
-        <p v-if="!reviews.length">There are no review yet</p>
-        <ul v-else>
-            <li v-for="review in reviews">
-                <p>name:{{review.name}}</p>
-                <p>review:{{review.review}}</p>
-                <p>rating:{{review.rating}}</p>
-            </li>
-        </ul>
-    </div>
-    <product-review @review-submit="addReview"></product-review>
+    <product-tabs :reviews="reviews"></product-tabs>
   </div>`,
-    data: () => ({
-        brand: "Vue Mastery",
-        product: "Socks",
-        selectedVariant: 0,
-        alternativeText: "greeen socks",
-        details: ["80% cotton", "20% polyster", "gender-neutral"],
-        variants: [
-            {
-                variantId: 2234,
-                variantColor: "green",
-                variantImage: "./public/assets/green-socks.jpg",
-                variantQuantity: 10,
-            },
-            {
-                variantId: 2235,
-                variantColor: "blue",
-                variantImage: "./public/assets/blue-socks.jpg",
-                variantQuantity: 5,
-            },
-        ],
-        reviews: []
-    }),
-    methods: {
-        addToCart: function () {
-            this.$emit('add-to-cart', this.variants[this.selectedVariant].variantId);
-        },
-        onColorHover: function (index) {
-            this.selectedVariant = index;
-        },
-        removeFromCart: function () {
-            if (this.cart > 0) {
-                this.cart -= 1;
-            }
-        },
-        addReview: function (review) {
-            this.reviews.push(review)
-        }
+  data: () => ({
+    brand: "Vue Mastery",
+    product: "Socks",
+    selectedVariant: 0,
+    alternativeText: "greeen socks",
+    details: ["80% cotton", "20% polyster", "gender-neutral"],
+    variants: [
+      {
+        variantId: 2234,
+        variantColor: "green",
+        variantImage: "./public/assets/green-socks.jpg",
+        variantQuantity: 10,
+      },
+      {
+        variantId: 2235,
+        variantColor: "blue",
+        variantImage: "./public/assets/blue-socks.jpg",
+        variantQuantity: 5,
+      },
+    ],
+    reviews: [],
+  }),
+  methods: {
+    addToCart: function () {
+      this.$emit("add-to-cart", this.variants[this.selectedVariant].variantId);
     },
-    computed: {
-        title: function () {
-            return this.brand + " " + this.product;
-        },
-        image() {
-            return this.variants[this.selectedVariant].variantImage;
-        },
-        quantity: function () {
-            return this.variants[this.selectedVariant].variantQuantity;
-        },
-        shipping() {
-            if (this.premium) {
-                return 'free';
-            }
-            return 2.99
-        }
-
+    onColorHover: function (index) {
+      this.selectedVariant = index;
     },
+    removeFromCart: function () {
+      if (this.cart > 0) {
+        this.cart -= 1;
+      }
+    },
+  },
+  computed: {
+    title: function () {
+      return this.brand + " " + this.product;
+    },
+    image() {
+      return this.variants[this.selectedVariant].variantImage;
+    },
+    quantity: function () {
+      return this.variants[this.selectedVariant].variantQuantity;
+    },
+    shipping() {
+      if (this.premium) {
+        return "free";
+      }
+      return 2.99;
+    },
+  },
+  mounted() {
+    eventBus.$on("review-submit", (review) => {
+      this.reviews.push(review);
+    });
+  },
 });
 
 var app = new Vue({
-    el: "#app",
-    data: {
-        premium: true,
-        cart: [],
+  el: "#app",
+  data: {
+    premium: true,
+    cart: [],
+  },
+  methods: {
+    updateCart: function (id) {
+      this.cart.push(id);
     },
-    methods: {
-        updateCart: function (id) {
-            this.cart.push(id);
-        }
-    }
+  },
 });
 
 // v-bind one way binding

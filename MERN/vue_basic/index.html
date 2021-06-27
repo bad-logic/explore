@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VUE JS BASIC</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+  </head>
+
+  <body>
+    <div class="nav-bar">
+      <div id="app">
+        <div class="product">
+          <div class="product-image">
+            <img v-bind:src="image" :alt="alternativeText" />
+          </div>
+          <div class="product-info">
+            <h1>{{title}}</h1>
+            <p v-if="quantity > 10">In Stock</p>
+            <p v-else-if="quantity > 0 && quantity <= 10">Almost sold out</p>
+            <p
+              v-else
+              :style="{'text-decoration': quantity<1 && 'line-through'}"
+            >
+              Out of Stock
+            </p>
+
+            <ul>
+              <li v-for="detail in details">{{detail}}</li>
+            </ul>
+            <div
+              v-for="(variant,index) in variants"
+              v-bind:key="variant.variantId"
+              class="color-box"
+              :style="{backgroundColor: variant.variantColor}"
+              v-on:mouseover="onColorHover(index)"
+            ></div>
+          </div>
+          <button
+            @click="addToCart"
+            :disabled="quantity < 1"
+            :class="quantity<1 && 'disabledButton'"
+          >
+            +
+          </button>
+          <div class="cart">
+            <p>{{cart}}</p>
+          </div>
+          <button
+            @click="removeFromCart"
+            :disabled="quantity < 1"
+            :class="quantity<1 && 'disabledButton'"
+          >
+            -
+          </button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>

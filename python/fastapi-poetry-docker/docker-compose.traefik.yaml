@@ -27,7 +27,7 @@ services:
       # traefik-https the actual router using https
       - traefik.http.routers.traefik-dashboard-https.entrypoints=https
       - traefik.http.routers.traefik-dashboard-https.rule=HOST(`subdomain.yourdomain.com`)
-      - traefik.http.routers.traefik-dashboard-https.tsl=true
+      - traefik.http.routers.traefik-dashboard-https.tls=true
       # use the "le" (Let's Encrypt) resolver
       - traefik.http.routers.traefik-dashboard-https.tls.certresolver=le
       # use the special traefik service api@internal with the web UI/Dashboard
@@ -58,7 +58,7 @@ services:
       - --certificatesresolvers.le.acme.email=youremail@mail.com
       # store the let's encrypt certificates in the mounted volume
       - --certificatesresolvers.le.acme.storage=/certificates/acme.json
-      # use the tsl challenge to lets encrypt
+      # use the tls challenge to lets encrypt
       - --certificatesresolvers.le.acme.tlschallenge=true
 
       # enable the access log, with http requests

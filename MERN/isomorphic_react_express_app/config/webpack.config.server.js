@@ -6,14 +6,14 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
   name: "server",
   entry: {
-    server: path.resolve(__dirname, "..", "src", "server", "server.ts"),
+    server: path.resolve(__dirname, "..", "src", "server", "index.ts"),
   },
   mode: "production",
   output: {
-    path: path.resolve(__dirname, "..", "dist"),
-    filename: "[name].js",
+    path: path.resolve(__dirname, "..", "dist/server"),
+    filename: "index.js",
   },
-  externals: [nodeExternals()],
+  externals: [nodeExternals()], // skip bundling files from the node_modules directory and instead import them at runtime because certain Node.js dependencies can't be bundled.
   resolve: {
     extensions: [".ts", ".tsx"],
   },
@@ -21,7 +21,7 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: "ts-loader",
+        loader: "ts-loader", // to compile ts files
         options: {
           configFile: "tsconfig.server.json",
         },
@@ -30,7 +30,12 @@ module.exports = {
   },
   target: "node",
   node: {
-    __dirname: false,
+    __dirname: false, // setting node.__dirname to false keeps the special __dirname path variable working as expected after the bundling
   },
-  plugins: [new CleanWebpackPlugin()],
+  plugins: [
+    new CopyPlugin({
+      patterns: [{ context: "src/server", from: "templates", to: "templates" }],
+    }),
+    new CleanWebpackPlugin(),
+  ],
 };

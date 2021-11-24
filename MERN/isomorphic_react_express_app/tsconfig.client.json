@@ -1,10 +1,10 @@
 {
   "include": ["src/client"],
   "compilerOptions": {
-    "module": "es6",
-    "target": "es5",
+    "module": "es6", // generate ES modules
+    "target": "es5", // target ES5 API
+    "jsx": "react", // compile JSX to React.createElement statements for browser,
     "moduleResolution": "node",
-    "jsx": "react",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,

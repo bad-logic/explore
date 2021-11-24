@@ -1,6 +1,6 @@
 import React from "react";
 import { StaticRouter } from "react-router-dom";
-import Routes from "./routes";
+import AppRoutes from "./routes";
 
 interface ServerProps {
   location: string;
@@ -8,7 +8,7 @@ interface ServerProps {
 const Server: React.FC<ServerProps> = ({ location }) => {
   return (
     <StaticRouter location={location}>
-      <Routes />
+      <AppRoutes />
     </StaticRouter>
   );
 };

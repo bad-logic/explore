@@ -1,8 +1,11 @@
 import express from "express";
+import { serverSideRendering } from "./middlewares/ssr";
 
 const app = express();
 
-app.get("/", (req, res) => {
+app.get("/*", serverSideRendering);
+
+app.get("/success", (req, res) => {
   res.send("success");
 });
 

@@ -1,18 +1,18 @@
-import path from "path";
-const __dirname = path.resolve();
-const configs = {
+const path = require("path");
+module.exports = {
   mode: "development",
-  entry: __dirname + "/src/client/index.jsx",
+  entry: "/src/client.entry.ts",
+  devtool: "source-map",
   output: {
-    path: path.resolve(__dirname + "/src/dist/"),
     filename: "browser.bundle.js",
+    path: path.resolve(__dirname, "dist/client"),
   },
   module: {
     rules: [
       {
-        test: /\.(jsx|es6)$/,
+        test: /\.(tsx|es6)?$/,
+        use: "ts-loader",
         exclude: /node_modules/,
-        use: "babel-loader",
       },
       {
         test: /\.css$/,
@@ -21,8 +21,6 @@ const configs = {
     ],
   },
   resolve: {
-    extensions: [".js", ".jsx", ".css", ".es6"],
+    extensions: [".ts", ".tsx", ".js", ".jsx", ".es6", ".css"],
   },
 };
-
-export default configs;

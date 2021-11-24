@@ -13,6 +13,10 @@ const compiler = webpack([
   },
 ]);
 
+process.on("unhandledRejection", (err) => {
+  throw err;
+});
+
 compiler.run((err, stats) => {
   if (err) {
     console.log({ err });

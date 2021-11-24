@@ -20,7 +20,12 @@ const compiler = webpack([
     devtool: "source-map",
   },
 ]);
+
 let node;
+
+process.on("unhandledRejection", (err) => {
+  throw err;
+});
 
 compiler.hooks.watchRun.tap("Dev", (compiler) => {
   console.log(`compiling ${compiler.name} ...`);

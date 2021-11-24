@@ -25,11 +25,8 @@ compiler.run((err, stats) => {
   console.log(stats?.toString("minimal"));
   const isCompiledSuccessfully = !stats?.hasErrors();
   if (isCompiledSuccessfully) {
-    spawn("node", [path.join(__dirname, "..", "dist/server.js")], {
+    spawn("node", [path.join(__dirname, "..", "dist/server/index.js")], {
       stdio: "inherit",
     });
-  } else {
-    console.log("unable to compile", JSON.stringify(stats));
-    process.exit(1);
   }
 });

@@ -10,7 +10,7 @@ module.exports = {
   mode: "production",
   output: {
     path: path.resolve(__dirname, "..", "dist", "static"),
-    filename: "[name].[contenthash].js",
+    filename: "[name].[contenthash].js", // name will be replaced with the key from the entry dictionary
     publicPath: "",
   },
   resolve: {
@@ -28,5 +28,8 @@ module.exports = {
     ],
   },
   target: "web",
-  plugins: [new CleanWebpackPlugin(), new WebpackManifestPlugin()],
+  plugins: [
+    new CleanWebpackPlugin(), //  removes any obsolete build artifacts resulting from including the hash
+    new WebpackManifestPlugin(), // generates a JSON file called manifest.json in the output directory from which we can gather the filename of the latest built bundle
+  ],
 };

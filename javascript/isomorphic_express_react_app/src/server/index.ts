@@ -3,8 +3,8 @@ import { serverSideRendering } from "./middlewares/ssr";
 
 const app = express();
 
-app.get("/success", (req, res) => {
-  res.send("success");
+app.get("/api", (req, res) => {
+  res.send("apis here");
 });
 
 app.get("/*", serverSideRendering);

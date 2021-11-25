@@ -1,6 +1,6 @@
-import React from "react";
-import { StaticRouter } from "react-router-dom";
-import AppRoutes from "./routes";
+import React from 'react';
+import { StaticRouter } from 'react-router-dom';
+import AppRoutes from './routes';
 
 interface ServerProps {
   location: string;

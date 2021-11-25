@@ -4,6 +4,7 @@ import { promisify } from "util";
 
 const readFile = promisify(fs.readFile);
 
+// @NOTE use templating engines like pug, ejs...
 interface ITemplateProps {
   title: string;
   content: string;

@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
-
+import { initialStoreInterface } from '../../client/store';
 const readFile = promisify(fs.readFile);
 
 // @NOTE use templating engines like pug, ejs...
@@ -11,7 +11,8 @@ interface ITemplateProps {
 }
 export const createHtmlResponse = async (
   template: string,
-  data: ITemplateProps
+  data: ITemplateProps,
+  reduxStore: initialStoreInterface
 ) => {
   try {
     const fileContent = await readFile(
@@ -20,7 +21,8 @@ export const createHtmlResponse = async (
     return fileContent
       .toString()
       .replace('{{title}}', data.title)
-      .replace('{{content}}', data.content);
+      .replace('{{content}}', data.content)
+      .replace('{{reduxStore}}', JSON.stringify(reduxStore));
   } catch (err) {
     console.log({ err });
     throw new Error(`Error Reading ${template}`);

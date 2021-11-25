@@ -9,10 +9,15 @@
     "devnull": "nodemon --exec ts-node src/server/index.ts"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.6.2",
     "express": "^4.17.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-router-dom": "5.1.2"
+    "react-redux": "^7.2.6",
+    "react-router-dom": "5.1.2",
+    "redux": "^4.1.2",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.4.0"
   },
   "devDependencies": {
     "@types/cross-spawn": "^6.0.2",
@@ -20,6 +25,7 @@
     "@types/node": "^16.11.9",
     "@types/react": "^17.0.36",
     "@types/react-dom": "^17.0.11",
+    "@types/react-redux": "^7.1.20",
     "@types/react-router-dom": "5.1.2",
     "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^10.0.0",

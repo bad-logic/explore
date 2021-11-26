@@ -1,16 +1,12 @@
 import React from 'react';
-import { TEMPLATE_TITLES } from '../../../server/utils/seo';
+import WithMeta from '../../hoc/withMeta';
 
-const App = () => {
-  React.useEffect(() => {
-    document.getElementsByTagName('title')[0].innerHTML =
-      TEMPLATE_TITLES['home'];
-  }, []);
+const Home = () => {
   return (
     <>
-      <div>This is react isomorphic app home page</div>
+      <div>This is react isomorphic Home home page</div>
     </>
   );
 };
 
-export default App;
+export default WithMeta(Home);

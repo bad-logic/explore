@@ -36,12 +36,9 @@ compiler.run((err, stats) => {
   console.log(stats?.toString('minimal'));
   const isCompiledSuccessfully = !stats?.hasErrors();
   if (isCompiledSuccessfully) {
-    spawn(
-      'NODE_ENV=production SERVER=TRUE node',
-      [path.join(__dirname, '..', 'dist/server/index.js')],
-      {
-        stdio: 'inherit',
-      }
-    );
+    spawn(' node', [path.join(__dirname, '..', 'dist/server/index.js')], {
+      stdio: 'inherit',
+      env: { ...process.env, NODE_ENV: 'production', SERVER: true },
+    });
   }
 });

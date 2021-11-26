@@ -5,14 +5,7 @@ import { createHtmlResponse } from '../utils/templateEngine';
 
 import { Provider } from 'react-redux';
 import initializeReduxStore from '../../client/store';
-
-const TITLE_OBJECT_MAPPER: Record<string, string> = {
-  home: 'Home',
-  'about-us': 'About Us',
-  'contact-us': 'Contact Us',
-};
-
-const NOT_FOUND_TITLE = 'Not Found';
+import { TEMPLATE_TITLES, NOT_FOUND_TITLE } from '../utils/seo';
 
 export const serverSideRendering = async (req: any, res: any, next: any) => {
   const store = initializeReduxStore();
@@ -26,7 +19,7 @@ export const serverSideRendering = async (req: any, res: any, next: any) => {
     })
   );
   const url = req.url.replace(/\//g, '').toLowerCase() || 'home'; // in case the url is / only
-  const title = TITLE_OBJECT_MAPPER[url] || NOT_FOUND_TITLE;
+  const title = TEMPLATE_TITLES[url] || NOT_FOUND_TITLE;
   const html = await createHtmlResponse(
     'index.html',
     {

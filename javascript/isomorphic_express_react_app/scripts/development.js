@@ -59,9 +59,12 @@ compiler.watch({}, (err, stats) => {
   const isCompiledSuccessfully = !stats?.hasErrors();
   if (isCompiledSuccessfully) {
     server = spawn(
-      'NODE_ENV=development SERVER=TRUE node',
+      'node',
       ['--inspect', path.join(__dirname, '..', 'dist/server/index.js')],
-      { stdio: 'inherit' }
+      {
+        stdio: 'inherit',
+        env: { ...process.env, NODE_ENV: 'development', SERVER: true },
+      }
     );
   }
 });

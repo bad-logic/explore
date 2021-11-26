@@ -8,7 +8,7 @@ app.get('/api', (req, res) => {
   res.send('apis here');
 });
 
-app.use(express.static(path.join(__dirname, '..', 'static')));
+app.use(express.static(path.join(__dirname, '..', 'public')));
 app.get('/*', serverSideRendering);
 
 app.listen(3000, () => {

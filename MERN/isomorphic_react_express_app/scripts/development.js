@@ -18,10 +18,6 @@ const compiler = webpack([
     ...webpackConfigClient,
     mode: 'development',
     devtool: 'source-map',
-    output: {
-      ...webpackConfigClient.output,
-      filename: '[name].js',
-    },
     plugins: [...webpackConfigClient.plugins, injectVariables],
   },
   {

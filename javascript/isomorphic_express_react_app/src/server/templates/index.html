@@ -8,6 +8,7 @@
   </head>
   <body>
     <div id="react-content">{{content}}</div>
-    <script dangerouslySetInnerHTML="{{__html:" {{reduxStore}}}} />
+    {{redux_store_script}}
+    <script defer="defer" src="/client.js"></script>
   </body>
 </html>

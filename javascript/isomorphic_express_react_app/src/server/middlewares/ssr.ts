@@ -15,6 +15,17 @@ export const serverSideRendering = async (
 ) => {
   try {
     const store = initializeReduxStore();
+    const url = getTemplateName(req.url);
+    const title = TEMPLATE_TITLES[url] || NOT_FOUND_TITLE;
+
+    // const componentHtml = ReactDOMServer.renderToStaticMarkup(
+    //   React.createElement(Provider, {
+    //     store,
+    //     children: React.createElement(Server, {
+    //       location: req.url,
+    //     }),
+    //   })
+    // );
 
     const componentHtml = ReactDOMServer.renderToString(
       React.createElement(Provider, {
@@ -24,8 +35,7 @@ export const serverSideRendering = async (
         }),
       })
     );
-    const url = getTemplateName(req.url);
-    const title = TEMPLATE_TITLES[url] || NOT_FOUND_TITLE;
+
     const html = await createHtmlResponse(
       'index.html',
       {

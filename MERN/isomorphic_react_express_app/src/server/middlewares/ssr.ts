@@ -6,6 +6,7 @@ import { createHtmlResponse } from '../utils/templateEngine';
 import { Provider } from 'react-redux';
 import initializeReduxStore from '../../client/store';
 import { TEMPLATE_TITLES, NOT_FOUND_TITLE } from '../utils/seo';
+import { getTemplateNameFromRoute as getTemplateName } from '../utils/utils';
 
 export const serverSideRendering = async (req: any, res: any, next: any) => {
   const store = initializeReduxStore();
@@ -18,7 +19,7 @@ export const serverSideRendering = async (req: any, res: any, next: any) => {
       }),
     })
   );
-  const url = req.url.replace(/\//g, '').toLowerCase() || 'home'; // in case the url is / only
+  const url = getTemplateName(req.url);
   const title = TEMPLATE_TITLES[url] || NOT_FOUND_TITLE;
   const html = await createHtmlResponse(
     'index.html',

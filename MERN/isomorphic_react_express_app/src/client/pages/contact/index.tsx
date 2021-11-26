@@ -1,12 +1,8 @@
 import React from 'react';
-import { TEMPLATE_TITLES } from '../../../server/utils/seo';
+import WithMeta from '../../hoc/withMeta';
 
-const App = () => {
-  React.useEffect(() => {
-    document.getElementsByTagName('title')[0].innerHTML =
-      TEMPLATE_TITLES['contact-us'];
-  }, []);
+const Contact = () => {
   return <div>CONTACT US</div>;
 };
 
-export default App;
+export default WithMeta(Contact);

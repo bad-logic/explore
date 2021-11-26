@@ -18,12 +18,22 @@ const compiler = webpack([
     ...webpackConfigClient,
     mode: 'development',
     devtool: 'source-map',
+    output: {
+      path: path.resolve(__dirname, '..', 'dist', 'public'),
+      filename: '[name].[contenthash:8].js', // name will be replaced with the key from the entry dictionary
+      chunkFilename: '[name].[contenthash:8].chunk.js',
+      publicPath: '',
+    },
     plugins: [...webpackConfigClient.plugins, injectVariables],
   },
   {
     ...webpackConfigServer,
     mode: 'development',
     devtool: 'source-map',
+    output: {
+      path: path.resolve(__dirname, '..', 'dist/src'),
+      filename: 'server.js',
+    },
   },
 ]);
 
@@ -56,7 +66,7 @@ compiler.watch({}, (err, stats) => {
   if (isCompiledSuccessfully) {
     server = spawn(
       'node',
-      ['--inspect', path.join(__dirname, '..', 'dist/server/index.js')],
+      ['--inspect', path.join(__dirname, '..', 'dist/src/server.js')],
       {
         stdio: 'inherit',
         env: { ...process.env, NODE_ENV: 'development', SERVER: true },

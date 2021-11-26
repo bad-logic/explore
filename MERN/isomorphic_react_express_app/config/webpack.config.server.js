@@ -9,8 +9,8 @@ module.exports = {
   },
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, '..', 'dist/server'),
-    filename: 'index.js',
+    path: path.resolve(__dirname, '..', 'build/src'),
+    filename: 'server.js',
   },
   externals: [nodeExternals()], // skip bundling files from the node_modules directory and instead import them at runtime because certain Node.js dependencies can't be bundled.
   resolve: {

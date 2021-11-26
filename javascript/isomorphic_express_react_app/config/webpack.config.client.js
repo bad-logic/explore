@@ -10,7 +10,7 @@ module.exports = {
   },
   mode: 'production',
   output: {
-    path: path.resolve(__dirname, '..', 'dist', 'public'),
+    path: path.resolve(__dirname, '..', 'build', 'public'),
     filename: '[name].[contenthash:8].js', // name will be replaced with the key from the entry dictionary
     chunkFilename: '[name].[contenthash:8].chunk.js',
     publicPath: '',
@@ -34,7 +34,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Custom template',
       template: 'src/server/templates/index.html',
-      filename: '../server/templates/index.html',
+      filename: '../src/templates/index.html',
     }),
     new CleanWebpackPlugin(), //  removes any obsolete build artifacts resulting from including the hash
     new WebpackManifestPlugin(), // generates a JSON file called manifest.json in the output directory from which we can gather the filename of the latest built bundle

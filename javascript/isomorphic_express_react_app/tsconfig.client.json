@@ -1,7 +1,7 @@
 {
   "include": ["src/client"],
   "compilerOptions": {
-    "module": "es6", // generate ES modules
+    "module": "esnext", 
     "target": "es5", // target ES5 API
     "jsx": "react", // compile JSX to React.createElement statements for browser,
     "moduleResolution": "node",

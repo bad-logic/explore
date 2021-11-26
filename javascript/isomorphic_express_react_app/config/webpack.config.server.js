@@ -1,41 +1,35 @@
-const nodeExternals = require("webpack-node-externals");
-const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin"); // for copying files to build/dist folders
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const nodeExternals = require('webpack-node-externals');
+const path = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-  name: "server",
+  name: 'server',
   entry: {
-    server: path.resolve(__dirname, "..", "src", "server", "index.ts"),
+    server: path.resolve(__dirname, '..', 'src', 'server', 'index.ts'),
   },
-  mode: "production",
+  mode: 'production',
   output: {
-    path: path.resolve(__dirname, "..", "dist/server"),
-    filename: "index.js",
+    path: path.resolve(__dirname, '..', 'dist/server'),
+    filename: 'index.js',
   },
   externals: [nodeExternals()], // skip bundling files from the node_modules directory and instead import them at runtime because certain Node.js dependencies can't be bundled.
   resolve: {
-    extensions: [".ts", ".tsx"],
+    extensions: ['.ts', '.tsx'],
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        loader: "ts-loader", // to compile ts files
+        loader: 'ts-loader', // to compile ts files
         options: {
-          configFile: "tsconfig.server.json",
+          configFile: 'tsconfig.server.json',
         },
       },
     ],
   },
-  target: "node",
+  target: 'node',
   node: {
     __dirname: false, // setting node.__dirname to false keeps the special __dirname path variable working as expected after the bundling
   },
-  plugins: [
-    new CopyPlugin({
-      patterns: [{ context: "src/server", from: "templates", to: "templates" }],
-    }),
-    new CleanWebpackPlugin(),
-  ],
+  plugins: [new CleanWebpackPlugin()],
 };

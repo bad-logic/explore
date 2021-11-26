@@ -3,21 +3,19 @@ import ReactDOM from 'react-dom';
 import Client from './entrypoint.client';
 import { Provider } from 'react-redux';
 import initializeReduxStore from './store';
-
-console.log('Browser packed file loaded');
+import { CUSTOM_BROWSER_OBJECTS } from '../server/utils/browser';
 
 declare global {
   interface Window {
-    MyReduxStore: any;
+    [CUSTOM_BROWSER_OBJECTS.REDUX_STORE_STATE]: any;
   }
 }
 
-const initialState = window.MyReduxStore || {};
+const initialState = window[CUSTOM_BROWSER_OBJECTS.REDUX_STORE_STATE] || {};
 const store = initializeReduxStore(initialState);
 
-console.log('Data to hydrate with', initialState, store);
-
-// ReactDOM.render(<App />, document.getElementById("react-content"));
+// ReactDOM.render(<Client />, document.getElementById('react-content'));
+// ReactDOM.hydrate(<Client />, document.getElementById('react-content'));
 
 // ReactDOM.hydrate(<Client />, document.documentElement);
 

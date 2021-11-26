@@ -2,6 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { promisify } from 'util';
 import { initialStoreInterface } from '../../client/store';
+import { CUSTOM_BROWSER_OBJECTS } from '../utils/browser';
+
 const readFile = promisify(fs.readFile);
 
 // @NOTE use templating engines like pug, ejs...
@@ -22,7 +24,12 @@ export const createHtmlResponse = async (
       .toString()
       .replace('{{title}}', data.title)
       .replace('{{content}}', data.content)
-      .replace('{{reduxStore}}', JSON.stringify(reduxStore));
+      .replace(
+        '{{redux_store_script}}',
+        `<script>window.${
+          CUSTOM_BROWSER_OBJECTS.REDUX_STORE_STATE
+        }=${JSON.stringify(reduxStore)}</script>`
+      );
   } catch (err) {
     console.log({ err });
     throw new Error(`Error Reading ${template}`);

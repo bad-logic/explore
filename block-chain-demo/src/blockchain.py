@@ -18,11 +18,17 @@ class Blockchain(object):
     def register_node(self, address: str) -> None:
         """
         Add a new node to the list of nodes
-        :param address: <str> Address of node. Eg. 'http://192.168.0.5:5000'
+        :param address: <str> Address of node. Eg. 'http://127.0.0.1:5000' 
         :return: None
         """
-        parsed_url = urlparse(address)
-        self.nodes.add(parsed_url.netloc)
+        # for nodes that are not running in the same machines docker
+        # parsed_url = urlparse(address)
+        # self.nodes.add(parsed_url.netloc)
+
+        # for docker nodes running in the same machine
+        #  our nodes are pyblock-service:5000,
+        # pyblock-node1-service:5001,pyblock-node2-service:5002
+        self.nodes.add(address)
 
     def valid_chain(self, chain: list) -> bool:
         """

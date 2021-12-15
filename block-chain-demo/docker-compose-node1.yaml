@@ -1,15 +1,15 @@
 version: "3"
 
 services:
-  pyblock-service:
-    image: badlog/blockpy
-    container_name: blockchain-py-server
+  pyblock-node1-service:
+    image: badlog/blockpy-node1
+    container_name: blockchain-py-server-node1
     build:
       context: ./
     volumes:
       - ./src:/usr/app/src
     environment:
-      - PORT=5000
+      - PORT=5001
     ports:
-      - 5000:5000
+      - 5001:5001
     restart: on-failure

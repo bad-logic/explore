@@ -3,6 +3,7 @@ from uuid import uuid4
 from blockchain import Blockchain
 import logging
 import json
+import os
 
 from flask import Flask, jsonify, request
 
@@ -72,5 +73,42 @@ def full_chain():
     return jsonify(response), 200
 
 
+@app.route('/nodes/register', methods=['POST'])
+def register_nodes():
+    values = request.get_json()
+    nodes = values.get('nodes')
+    if nodes is None:
+        return "Error: Please supply a valid list of nodes", 400
+
+    for node in nodes:
+        block_chain.register_node(node)
+
+    response = {
+        'message': 'New nodes have been added',
+        'total_nodes': list(block_chain.nodes),
+    }
+    return jsonify(response), 201
+
+
+@app.route('/nodes/resolve', methods=['GET'])
+def resolve_nodes():
+    replaced = block_chain.resolve_conflicts()
+
+    if replaced:
+        response = {
+            'message': 'chain is tampered with',
+            'new chain': block_chain.chain
+        }
+    else:
+        response = {
+            'message': 'chain is authoritatice',
+            'new chain': block_chain.chain
+        }
+    return jsonify(response), 200
+
+
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000,)
+    PORT = os.environ.get('PORT')
+    if PORT == None:
+        raise Exception('environment variable PORT not found')
+    app.run(debug=True, host='0.0.0.0', port=PORT)

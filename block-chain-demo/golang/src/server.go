@@ -14,8 +14,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-var Blockchain []Block
-
 type Block struct {
 	Index     int
 	Timestamp string
@@ -23,6 +21,8 @@ type Block struct {
 	PrevHash  string
 	Hash      string
 }
+
+var Blockchain []Block
 
 func generateHash(block Block) string {
 	record := string(block.Index) + block.Timestamp + string(block.BPM) + block.PrevHash
@@ -90,7 +90,7 @@ type Message struct {
 
 func handleWriteBlock(response http.ResponseWriter, request *http.Request) {
 	var m Message
-	decoder := json.NewDecoder(request.Body)
+	decoder := json.NewDecoder(request.Body) // send BPM int in body of the request
 	if err := decoder.Decode(&m); err != nil {
 		respondWithJSON(request, response, http.StatusBadRequest, request.Body)
 		return

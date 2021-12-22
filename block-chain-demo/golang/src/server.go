@@ -81,13 +81,7 @@ func respondWithJSON(request *http.Request, response http.ResponseWriter, status
 }
 
 func handleGetBlockchain(response http.ResponseWriter, request *http.Request) {
-	bytes, err := json.MarshalIndent(Blockchain, "", " ")
-	if err != nil {
-		http.Error(response, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	respondWithJSON(request, response, http.StatusOK, string(bytes))
+	respondWithJSON(request, response, http.StatusOK, Blockchain)
 }
 
 type Message struct {
@@ -121,8 +115,8 @@ func handleWriteBlock(response http.ResponseWriter, request *http.Request) {
 
 func runServer() error {
 	handler := makeMuxRouter()
-	httpAddr := os.Getenv("ADDR")
-	log.Println("Listening on ", os.Getenv(("ADDR")))
+	httpAddr := os.Getenv("PORT")
+	log.Println("Listening on", os.Getenv(("PORT")))
 	s := &http.Server{
 		Addr:           ":" + httpAddr,
 		Handler:        handler,
@@ -139,13 +133,20 @@ func runServer() error {
 
 func main() {
 
-	environment := os.Environ()
+	port := os.Getenv("PORT")
 
-	log.Println(environment)
+	if port == "" {
+		log.Fatal("PORT not set")
+	}
 
 	go func() {
 		t := time.Now()
-		genesisBlock := Block{0, t.String(), 0, "", ""}
+		var genesisBlock Block
+		genesisBlock.Index = 0
+		genesisBlock.Timestamp = t.String()
+		genesisBlock.BPM = 0
+		genesisBlock.PrevHash = ""
+		genesisBlock.Hash = generateHash(genesisBlock)
 		spew.Dump(genesisBlock)
 		Blockchain = append(Blockchain, genesisBlock)
 	}()

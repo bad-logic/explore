@@ -7,15 +7,11 @@ ENV GO111MODULE=on \
 
 # install git to add deps from git repos
 RUN apk add git
+RUN go get github.com/davecgh/go-spew
+RUN go get github.com/gorilla/mux
 
 # set your working directory
 WORKDIR /usr/app
-
-# copy files go.mod and go.sum
-COPY go.mod .
-COPY go.sum .
-# Add this go mod download command to pull in any dependencies
-RUN go mod download
 
 # create src directory inside workdir /usr/app
 RUN mkdir /usr/app/src
@@ -24,7 +20,7 @@ RUN mkdir /usr/app/src
 COPY ./src ./src
 
 ## Our project will now successfully build with the necessary go libraries included.
-RUN go build -o src/server .
+RUN go build src/server.go
 
 ## execute newly created binary executable
 CMD ["./server"]

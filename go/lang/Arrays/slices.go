@@ -16,11 +16,11 @@ func main() {
 	fav_items := []string{"table"}
 
 	// using make function
-	array := make([]int, 0, 5)
+	array := make([]int, 0, 5) // when length and capacity is different
 	// 0 is the initial length, and 5 is the initial capacity
 	// which is later changed dynamically to meet the requirement
 
-	array_short := make([]int, 0)
+	array_short := make([]int, 0) // when length and capacity is same
 
 	// insert items
 	arr_slice = append(arr_slice, 1)

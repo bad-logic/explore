@@ -1,0 +1,2 @@
+this text should be cloned
+Add this content at the end of the file

@@ -94,7 +94,7 @@ func barber(b *Barber, waitingRoomCust chan *Customer, wakers chan *Customer) {
 }
 
 // customer goroutine
-// leave if waiting room is fulll, otherwise wait in the chair
+// leave if waiting room is full, otherwise wait in the chair
 // is passed along to the channel handling it's haircut
 func customer(c *Customer, b *Barber, waitingRoom chan<- *Customer, wakers chan<- *Customer) {
 	// arrive

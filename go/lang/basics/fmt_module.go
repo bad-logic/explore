@@ -18,7 +18,7 @@ func main() {
 	// fmt.Println() usage
 	fmt.Println("Hello")
 
-	// multiple arguments of different types can be given seperated by commas
+	// multiple arguments of different types can be given separated by commas
 	fmt.Println("Hello", 22, 98.3, true)
 
 	// you can also pass variables as arguments
@@ -37,7 +37,7 @@ func main() {
 	name := "Jon Snow"
 	fmt.Printf("%T is the type of %v", name, name)
 
-	// smt.Sprintf() usage
+	// fmt.Sprintf() usage
 	// the function returns a formatted string.
 	s := fmt.Sprintf("%s is the son of %s", "Harry", "Lily") // returns a string "Harry is the son of Lily"
 

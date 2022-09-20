@@ -1,7 +1,7 @@
 package main
 
 /*
-	init functions are run before main funtions.
+	init functions are run before main functions.
 	you are allowed to write multiple init function anywhere in the program
 */
 

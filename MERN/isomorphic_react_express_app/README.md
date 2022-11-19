@@ -1,5 +1,3 @@
-react-express-isomorphic-app
+react-redux-express-isomorphic-app\
+React with both server side and client side rendering (ISOMORPHIC APPLICATION)
 
-REACT WITH BOTH SERVER SIDE RENDERING AND CLIENT SIDE RENDERING (ISOMORPHIC APPLICATION)
-EXPRESS
-REDUX

@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
-    "start": "webpack --watch --progress --config webpack.config.js"
+    "transpile": "tsc",
+    "start": "webpack --watch --progress --config webpack.config.dev.js",
+    "build": "webpack --watch --progress --config webpack.config.prod.js"
   },
   "author": "roshanbhattarai",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "@types/chrome": "^0.0.239",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
+    "clean-webpack-plugin": "^4.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
     "html-webpack-plugin": "^5.5.3",
@@ -23,6 +25,7 @@
     "ts-loader": "^9.4.3",
     "typescript": "^5.1.3",
     "webpack": "^5.88.0",
-    "webpack-cli": "^5.1.4"
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^5.9.0"
   }
 }

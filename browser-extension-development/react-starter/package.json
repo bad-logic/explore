@@ -11,6 +11,7 @@
   "author": "roshanbhattarai",
   "license": "ISC",
   "devDependencies": {
+    "@types/chrome": "^0.0.239",
     "@types/react": "^18.2.14",
     "@types/react-dom": "^18.2.6",
     "copy-webpack-plugin": "^11.0.0",

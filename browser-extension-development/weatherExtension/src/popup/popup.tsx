@@ -5,25 +5,37 @@ import AddIcon from '@mui/icons-material/Add';
 
 import WeatherCard from './weatherCard';
 import { Box, Grid, IconButton, InputBase, Paper } from '@mui/material';
+import { getStoredCities, setStorageCities } from '../utils/storage';
 
 import './popup.css';
 
 const App: React.FC<{}> = () => {
-  const [cities, setCities] = React.useState<string[]>(['toronto', 'New York']);
+  const [cities, setCities] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    getStoredCities().then((data) => {
+      setCities(data);
+    });
+  }, []);
 
   const [cityInput, setCityInput] = React.useState<string>('');
 
   const AddToList = () => {
     if (cityInput) {
-      setCities((pre) => [...pre, cityInput]);
+      const newCities = [...cities, cityInput];
+      setStorageCities([...newCities]).then(() => {
+        setCities([...newCities]);
+        setCityInput('');
+      });
     }
-    setCityInput('');
   };
 
   const handleDelete = (index: number) => {
     const newCities = [...cities];
     newCities.splice(index, 1);
-    setCities([...newCities]);
+    setStorageCities([...newCities]).then(() => {
+      setCities([...newCities]);
+    });
   };
 
   return (
@@ -37,8 +49,8 @@ const App: React.FC<{}> = () => {
                 value={cityInput}
                 onChange={(e) => setCityInput(e.target.value)}
               />
-              <IconButton type="button">
-                <AddIcon onClick={AddToList} />
+              <IconButton type="button" onClick={AddToList}>
+                <AddIcon />
               </IconButton>
             </Box>
           </Paper>

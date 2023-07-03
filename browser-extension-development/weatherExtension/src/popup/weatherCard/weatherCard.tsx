@@ -1,15 +1,23 @@
 import React from 'react';
-import { Box, Card, CardContent, Typography } from '@mui/material';
+import { Box, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 
 import { IOpenWeatherData, fetchOpenWeatherData } from '../../utils/api';
 
 const WeatherCardContainer: React.FC<{
   children: React.ReactNode;
-}> = ({ children }) => {
+  onDelete?: () => void;
+}> = ({ children, onDelete }) => {
   return (
     <Box mx="4px" my="26px">
       <Card>
         <CardContent>{children}</CardContent>
+        <CardActions>
+          {onDelete && (
+            <Button color="error" onClick={onDelete}>
+              Delete
+            </Button>
+          )}
+        </CardActions>
       </Card>
     </Box>
   );
@@ -17,7 +25,7 @@ const WeatherCardContainer: React.FC<{
 
 type WeatherCardState = 'loading' | 'error' | 'ready';
 
-const WeatherCard: React.FC<{ city: string }> = ({ city }) => {
+const WeatherCard: React.FC<{ city: string; onDelete?: () => void }> = ({ city, onDelete }) => {
   const [cardState, setCardState] = React.useState<WeatherCardState>('loading');
   const [weather, setWeather] = React.useState<IOpenWeatherData | null>(null);
   React.useEffect(() => {
@@ -43,7 +51,7 @@ const WeatherCard: React.FC<{ city: string }> = ({ city }) => {
   }
 
   return (
-    <WeatherCardContainer>
+    <WeatherCardContainer onDelete={onDelete}>
       <Typography variant="h5">{weather.name}</Typography>
       <Typography variant="body1">{Math.round(weather.main.temp)}</Typography>
       <Typography variant="body1">Feels like: {Math.round(weather.main.feels_like)}</Typography>

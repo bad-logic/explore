@@ -5,16 +5,27 @@ import AddIcon from '@mui/icons-material/Add';
 
 import WeatherCard from './weatherCard';
 import { Box, Grid, IconButton, InputBase, Paper } from '@mui/material';
-import { getStoredCities, setStorageCities } from '../utils/storage';
+import {
+  getStoredCities,
+  setStorageCities,
+  setStorageOptions,
+  getStorageOptions,
+  LocalStorageOptions,
+} from '../utils/storage';
 
 import './popup.css';
 
 const App: React.FC<{}> = () => {
   const [cities, setCities] = React.useState<string[]>([]);
+  const [options, setOptions] = React.useState<LocalStorageOptions | null>(null);
 
   React.useEffect(() => {
-    getStoredCities().then((data) => {
-      setCities(data);
+    getStoredCities().then((cities) => {
+      setCities(cities);
+    });
+    getStorageOptions().then((options) => {
+      console.log({ options });
+      setOptions(options);
     });
   }, []);
 
@@ -38,9 +49,23 @@ const App: React.FC<{}> = () => {
     });
   };
 
+  const handleTempScaleButtonClick = () => {
+    const updatedOptions: LocalStorageOptions = {
+      ...options,
+      tempScale: options.tempScale === 'metric' ? 'imperial' : 'metric',
+    };
+    setStorageOptions(updatedOptions).then(() => {
+      setOptions(updatedOptions);
+    });
+  };
+
+  if (!options) {
+    return null;
+  }
+
   return (
     <Box mx="8px" my="16px">
-      <Grid container>
+      <Grid container justifyContent="space-evenly">
         <Grid item>
           <Paper>
             <Box px="15px" py="5px">
@@ -55,9 +80,18 @@ const App: React.FC<{}> = () => {
             </Box>
           </Paper>
         </Grid>
+        <Grid item>
+          <Paper>
+            <Box py="4px">
+              <IconButton onClick={handleTempScaleButtonClick}>
+                {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
       </Grid>
       {cities.map((city, ind) => (
-        <WeatherCard key={ind + city} city={city} onDelete={() => handleDelete(ind)} />
+        <WeatherCard key={ind + city} city={city} onDelete={() => handleDelete(ind)} tempScale={options.tempScale} />
       ))}
       <Box height="16px" />
     </Box>

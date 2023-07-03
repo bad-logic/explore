@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
 
-import { IOpenWeatherData, fetchOpenWeatherData } from '../../utils/api';
+import { IOpenWeatherData, OpenWeatherTempScale, fetchOpenWeatherData } from '../../utils/api';
 
 const WeatherCardContainer: React.FC<{
   children: React.ReactNode;
@@ -25,11 +25,15 @@ const WeatherCardContainer: React.FC<{
 
 type WeatherCardState = 'loading' | 'error' | 'ready';
 
-const WeatherCard: React.FC<{ city: string; onDelete?: () => void }> = ({ city, onDelete }) => {
+const WeatherCard: React.FC<{ city: string; tempScale: OpenWeatherTempScale; onDelete?: () => void }> = ({
+  city,
+  tempScale,
+  onDelete,
+}) => {
   const [cardState, setCardState] = React.useState<WeatherCardState>('loading');
   const [weather, setWeather] = React.useState<IOpenWeatherData | null>(null);
   React.useEffect(() => {
-    fetchOpenWeatherData(city)
+    fetchOpenWeatherData(city, tempScale)
       .then((res) => {
         setWeather(res);
         setCardState('ready');
@@ -38,7 +42,7 @@ const WeatherCard: React.FC<{ city: string; onDelete?: () => void }> = ({ city, 
         console.error({ err });
         setCardState('error');
       });
-  }, [city]);
+  }, [city, tempScale]);
 
   if (cardState === 'loading' || cardState === 'error') {
     return (

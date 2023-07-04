@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDom from 'react-dom/client';
+import ReactDOM from 'react-dom/client';
 
 import AddIcon from '@mui/icons-material/Add';
 
@@ -90,6 +90,7 @@ const App: React.FC<{}> = () => {
           </Paper>
         </Grid>
       </Grid>
+      {options.homeCity !== '' && <WeatherCard city={options.homeCity} tempScale={options.tempScale} />}
       {cities.map((city, ind) => (
         <WeatherCard key={ind + city} city={city} onDelete={() => handleDelete(ind)} tempScale={options.tempScale} />
       ))}
@@ -101,4 +102,4 @@ const App: React.FC<{}> = () => {
 const root = document.createElement('div');
 document.body.appendChild(root);
 
-ReactDom.createRoot(root).render(<App />);
+ReactDOM.createRoot(root).render(<App />);

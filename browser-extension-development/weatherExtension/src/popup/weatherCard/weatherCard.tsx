@@ -48,7 +48,7 @@ const WeatherCard: React.FC<{ city: string; tempScale: OpenWeatherTempScale; onD
     return (
       <WeatherCardContainer onDelete={cardState === 'error' && onDelete}>
         <Typography variant="body1">
-          {cardState === 'loading' ? 'Loading...' : 'Error: could not retrieve data for this city.'}
+          {cardState === 'loading' ? 'Loading...' : `Error: could not retrieve data for ${city}.`}
         </Typography>
       </WeatherCardContainer>
     );

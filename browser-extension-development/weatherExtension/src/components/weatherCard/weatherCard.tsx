@@ -41,7 +41,6 @@ const WeatherCard: React.FC<{ city: string; tempScale: OpenWeatherTempScale; onD
         setCardState('ready');
       })
       .catch((err) => {
-        console.error({ err });
         setCardState('error');
       });
   }, [city, tempScale]);

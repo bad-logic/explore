@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { Box, Button, Card, CardContent, Grid, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Grid, Switch, TextField, Typography } from '@mui/material';
 import { LocalStorageOptions, getStorageOptions, setStorageOptions } from '../utils/storage';
 import './options.css';
 
@@ -19,6 +19,10 @@ const Options: React.FC<{}> = () => {
 
   const handleHomeCityChange = (homeCity: string) => {
     setOptions((p) => ({ ...p, homeCity: homeCity }));
+  };
+
+  const handleAutoOverlayChange = (overlay: boolean) => {
+    setOptions((p) => ({ ...p, hasAutoOverlay: overlay }));
   };
 
   const handleSaveClick = () => {
@@ -49,6 +53,15 @@ const Options: React.FC<{}> = () => {
                 fullWidth
                 placeholder="Enter a home city name"
                 onChange={(e) => handleHomeCityChange(e.target.value)}
+                disabled={formState === 'saving'}
+              />
+            </Grid>
+            <Grid item>
+              <Typography variant="body1">Auto Toggle Overlay</Typography>
+              <Switch
+                color="primary"
+                checked={options.hasAutoOverlay}
+                onChange={(e, checked) => handleAutoOverlayChange(checked)}
                 disabled={formState === 'saving'}
               />
             </Grid>

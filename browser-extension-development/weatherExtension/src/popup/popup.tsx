@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import AddIcon from '@mui/icons-material/Add';
+import { PictureInPictureAlt } from '@mui/icons-material';
 
-import WeatherCard from './weatherCard';
+import WeatherCard from '../components/weatherCard';
 import { Box, Grid, IconButton, InputBase, Paper } from '@mui/material';
 import {
   getStoredCities,
@@ -14,6 +15,7 @@ import {
 } from '../utils/storage';
 
 import './popup.css';
+import { Messages } from '../utils/messages';
 
 const App: React.FC<{}> = () => {
   const [cities, setCities] = React.useState<string[]>([]);
@@ -24,7 +26,6 @@ const App: React.FC<{}> = () => {
       setCities(cities);
     });
     getStorageOptions().then((options) => {
-      console.log({ options });
       setOptions(options);
     });
   }, []);
@@ -59,6 +60,19 @@ const App: React.FC<{}> = () => {
     });
   };
 
+  const handleOverlayButtonClick = () => {
+    chrome.tabs.query(
+      {
+        active: true,
+      },
+      (tabs) => {
+        if (tabs.length > 0) {
+          chrome.tabs.sendMessage(tabs[0].id, Messages.TOGGLE_OVERLAY);
+        }
+      }
+    );
+  };
+
   if (!options) {
     return null;
   }
@@ -68,7 +82,7 @@ const App: React.FC<{}> = () => {
       <Grid container justifyContent="space-evenly">
         <Grid item>
           <Paper>
-            <Box px="15px" py="5px">
+            <Box px="8px" py="4px">
               <InputBase
                 placeholder="Add a city name"
                 value={cityInput}
@@ -83,7 +97,16 @@ const App: React.FC<{}> = () => {
         <Grid item>
           <Paper>
             <Box py="4px">
-              <IconButton onClick={handleTempScaleButtonClick}>
+              <IconButton type="button" onClick={handleOverlayButtonClick}>
+                <PictureInPictureAlt />
+              </IconButton>
+            </Box>
+          </Paper>
+        </Grid>
+        <Grid item>
+          <Paper>
+            <Box py="2px">
+              <IconButton type="button" onClick={handleTempScaleButtonClick}>
                 {options.tempScale === 'metric' ? '\u2103' : '\u2109'}
               </IconButton>
             </Box>

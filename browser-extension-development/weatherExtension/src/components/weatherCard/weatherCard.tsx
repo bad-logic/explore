@@ -3,6 +3,8 @@ import { Box, Card, CardContent, Typography, CardActions, Button } from '@mui/ma
 
 import { IOpenWeatherData, OpenWeatherTempScale, fetchOpenWeatherData } from '../../utils/api';
 
+import './weatherCard.css';
+
 const WeatherCardContainer: React.FC<{
   children: React.ReactNode;
   onDelete?: () => void;
@@ -47,8 +49,9 @@ const WeatherCard: React.FC<{ city: string; tempScale: OpenWeatherTempScale; onD
   if (cardState === 'loading' || cardState === 'error') {
     return (
       <WeatherCardContainer onDelete={cardState === 'error' && onDelete}>
-        <Typography variant="body1">
-          {cardState === 'loading' ? 'Loading...' : `Error: could not retrieve data for ${city}.`}
+        <Typography className="weather-card-title">{city}</Typography>
+        <Typography className="weather-card-body">
+          {cardState === 'loading' ? 'Loading...' : `Error: could not retrieve data for this city.`}
         </Typography>
       </WeatherCardContainer>
     );
@@ -56,9 +59,9 @@ const WeatherCard: React.FC<{ city: string; tempScale: OpenWeatherTempScale; onD
 
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography variant="h5">{weather.name}</Typography>
-      <Typography variant="body1">{Math.round(weather.main.temp)}</Typography>
-      <Typography variant="body1">Feels like: {Math.round(weather.main.feels_like)}</Typography>
+      <Typography className="weather-card-title">{weather.name}</Typography>
+      <Typography className="weather-card-body">{Math.round(weather.main.temp)}</Typography>
+      <Typography className="weather-card-body">Feels like: {Math.round(weather.main.feels_like)}</Typography>
     </WeatherCardContainer>
   );
 };

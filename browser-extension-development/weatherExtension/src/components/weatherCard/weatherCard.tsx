@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Card, CardContent, Typography, CardActions, Button } from '@mui/material';
+import { Box, Card, CardContent, Typography, CardActions, Button, Grid } from '@mui/material';
 
 import { IOpenWeatherData, OpenWeatherTempScale, fetchOpenWeatherData } from '../../utils/api';
 
@@ -58,9 +58,21 @@ const WeatherCard: React.FC<{ city: string; tempScale: OpenWeatherTempScale; onD
 
   return (
     <WeatherCardContainer onDelete={onDelete}>
-      <Typography className="weather-card-title">{weather.name}</Typography>
-      <Typography className="weather-card-body">{Math.round(weather.main.temp)}</Typography>
-      <Typography className="weather-card-body">Feels like: {Math.round(weather.main.feels_like)}</Typography>
+      <Grid container justifyContent="space-around" alignItems="center">
+        <Grid item>
+          <Typography className="weather-card-title">{weather.name}</Typography>
+          <Typography className="weather-card-temp">{Math.round(weather.main.temp)}</Typography>
+          <Typography className="weather-card-body">Feels like: {Math.round(weather.main.feels_like)}</Typography>
+        </Grid>
+        <Grid item>
+          {weather.weather.length > 0 && (
+            <>
+              <img src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`} />
+              <Typography className="weather-card-body">{weather.weather[0].main}</Typography>
+            </>
+          )}
+        </Grid>
+      </Grid>
     </WeatherCardContainer>
   );
 };

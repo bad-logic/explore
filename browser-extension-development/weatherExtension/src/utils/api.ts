@@ -1,4 +1,4 @@
-const OPEN_WEATHER_API_KEY = YOUR_API_KEY_HERE;
+const OPEN_WEATHER_API_KEY = 'YOUR_API_KEY_HERE';
 
 export type OpenWeatherTempScale = 'metric' | 'imperial';
 export interface IOpenWeatherData {

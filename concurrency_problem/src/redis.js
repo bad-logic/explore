@@ -20,7 +20,7 @@ class _InternalRedis {
           password: 'secretPassword',
           db: _InternalRedis._db, // Defaults to 0
         });
-        _InternalRedis._redisClient.on('connect', (t) => {
+        _InternalRedis._redisClient.on('ready', (t) => {
           resolve(_InternalRedis._redisClient);
         });
         _InternalRedis._redisClient.on('error', (err) => {

@@ -4,13 +4,14 @@ import { SHARES_KEY } from './constants.js';
 export class Shares {
   static _instance;
 
-  async buy(shares) {
+  async buy(customer, shares) {
     const currentShares = await Redis.get(SHARES_KEY);
     if (parseInt(currentShares) < shares) {
-      console.info('no more shares available to buy');
-      throw new Error('no shares available');
+      console.info(`${customer} attempts to buy ${shares} shares`);
+      throw new Error('not enough shares available');
     }
     await Redis.set(SHARES_KEY, currentShares - shares);
+    console.info(`${customer} successfully bought ${shares} shares`);
   }
 
   static getInstance() {

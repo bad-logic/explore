@@ -47,4 +47,10 @@ export class Redis {
     const value = await conn.get(key);
     return value;
   }
+
+  static async incrby(key, value) {
+    const conn = await _InternalRedis.getConnection();
+    await conn.incrby(key, value);
+    return 'OK';
+  }
 }

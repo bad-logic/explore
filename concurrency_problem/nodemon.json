@@ -1,0 +1,11 @@
+{
+  "restartable": "rs",
+  "ignore": ["node_modules/"],
+  "legacyWatch": true,
+  "watch": ["src/"],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "ext": "js",
+  "exec": "node src/index.js"
+}

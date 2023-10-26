@@ -1,0 +1,16 @@
+version: '3'
+
+volumes:
+  redis_cache:
+
+services:
+  redis-service:
+    image: redis:7.2.2-alpine
+    container_name: redis
+    command: /bin/sh -c "redis-server --requirepass $$REDIS_HOST_PASSWORD"
+    environment:
+      REDIS_HOST_PASSWORD: secretPassword
+    ports:
+      - 6379:6379
+    volumes:
+      - redis_cache:/data

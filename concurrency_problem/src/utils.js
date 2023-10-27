@@ -17,6 +17,9 @@ export function buySharesConcurrently(customer, shares) {
         .catch((err) => {
           console.error(err);
           counter++;
+          if (counter === customer) {
+            return resolve('success');
+          }
         });
     }
   });
@@ -37,6 +40,9 @@ export function buySharesConcurrentlyWithRedisAtomicOperation(customer, shares) 
         .catch((err) => {
           console.error(err);
           counter++;
+          if (counter === customer) {
+            return resolve('success');
+          }
         });
     }
   });
@@ -57,6 +63,9 @@ export function buySharesConcurrentlyWithRedisTransactionOperation(customer, sha
         .catch((err) => {
           console.error(err);
           counter++;
+          if (counter === customer) {
+            return resolve('success');
+          }
         });
     }
   });
@@ -77,6 +86,9 @@ export function buySharesConcurrentlyWithLuaScriptsInsideRedisServer(customer, s
         .catch((err) => {
           console.error(err);
           counter++;
+          if (counter === customer) {
+            return resolve('success');
+          }
         });
     }
   });

@@ -1,3 +1,4 @@
+import { ReplyError } from 'ioredis';
 import { Redis } from './redis.js';
 import { SHARES_KEY } from './constants.js';
 
@@ -54,6 +55,21 @@ export class Shares {
       throw new Error(`${customer} could not buy shares`);
     }
     console.info(`${customer} successfully bought ${shares} shares`);
+  }
+
+  async buyUsingLuaScripts(customer, shares) {
+    console.info(`${customer} attempts to buy ${shares} shares`);
+
+    try {
+      const conn = await Redis.getConnection();
+      await conn.buyShares(SHARES_KEY, shares);
+      console.info(`${customer} successfully bought ${shares} shares`);
+    } catch (err) {
+      if (err instanceof ReplyError) {
+        throw new Error(`${customer}: not enough shares available`);
+      }
+      throw err;
+    }
   }
 
   static getInstance() {

@@ -61,3 +61,23 @@ export function buySharesConcurrentlyWithRedisTransactionOperation(customer, sha
     }
   });
 }
+
+export function buySharesConcurrentlyWithLuaScriptsInsideRedisServer(customer, shares) {
+  return new Promise((resolve, reject) => {
+    let counter = 0;
+    for (let i = 1; i <= customer; i++) {
+      shareInstance
+        .buyUsingLuaScripts(`customer${i}`, shares)
+        .then((_) => {
+          counter++;
+          if (counter === customer) {
+            return resolve('success');
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          counter++;
+        });
+    }
+  });
+}

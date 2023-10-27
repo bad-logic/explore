@@ -35,11 +35,35 @@ class _InternalRedis {
 }
 
 export class Redis {
-  static connect() {
-    return _InternalRedis.establishConnection();
+  static async connect() {
+    const conn = await _InternalRedis.establishConnection();
+    Redis._createLuaScripts(conn);
+    return conn;
   }
 
-  static getNewConnection() {
+  static _createLuaScripts(conn) {
+    conn.defineCommand('buyShares', {
+      numberOfKeys: 1,
+      lua: `
+            local sharesKey = KEYS[1]
+            local requestedShares = ARGV[1]
+
+            local currentShares = redis.call("GET", sharesKey)
+            if currentShares < requestedShares then
+              return {err = "error: not enough shares available"}
+            end
+
+            currentShares = currentShares - requestedShares
+            redis.call("SET", sharesKey, currentShares)
+      `,
+    });
+  }
+
+  static async getConnection() {
+    return _InternalRedis.getConnection();
+  }
+
+  static async getNewConnection() {
     return _InternalRedis.createConnection();
   }
 

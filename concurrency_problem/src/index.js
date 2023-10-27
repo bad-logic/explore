@@ -6,6 +6,7 @@ import {
   buySharesConcurrently,
   buySharesConcurrentlyWithRedisAtomicOperation,
   buySharesConcurrentlyWithRedisTransactionOperation,
+  buySharesConcurrentlyWithLuaScriptsInsideRedisServer,
 } from './utils.js';
 import { TOTAL_SHARES, SHARES_KEY } from './constants.js';
 
@@ -29,8 +30,16 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
         // all customers are able to buy the shares since they all see that there are 1000 shares
 
         // SOLUTIONS
+
+        // USING ATOMIC OPERATION -> fail
         // await buySharesConcurrentlyWithRedisAtomicOperation(30, 100);
-        await buySharesConcurrentlyWithRedisTransactionOperation(30, 100);
+
+        // USING REDIS TRANSACTION -> fail
+        // await buySharesConcurrentlyWithRedisTransactionOperation(30, 100);
+
+        // USING LUA SCRIPTS
+        await buySharesConcurrentlyWithLuaScriptsInsideRedisServer(30, 100);
+
         const totalSharesLeft = await Redis.get(SHARES_KEY);
         console.info({ totalShares: parseInt(totalSharesLeft) });
       } catch (err) {

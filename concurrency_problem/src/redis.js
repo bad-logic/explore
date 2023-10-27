@@ -4,36 +4,43 @@ class _InternalRedis {
   static _redisClient;
   static _db = 1;
 
-  static getConnection() {
-    return _InternalRedis.establishConnection();
+  static createConnection() {
+    return new Promise((resolve, reject) => {
+      const client = new IORedis({
+        port: 6379, // Redis port
+        host: 'localhost', // Redis host
+        username: 'default', // needs Redis >= 6
+        password: 'secretPassword',
+        db: _InternalRedis._db, // Defaults to 0
+      });
+      client.on('ready', (t) => {
+        resolve(client);
+      });
+      client.on('error', (err) => {
+        reject(err);
+      });
+    });
   }
 
-  static establishConnection() {
-    return new Promise((resolve, reject) => {
-      if (_InternalRedis._redisClient) {
-        resolve(_InternalRedis._redisClient);
-      } else {
-        _InternalRedis._redisClient = new IORedis({
-          port: 6379, // Redis port
-          host: 'localhost', // Redis host
-          username: 'default', // needs Redis >= 6
-          password: 'secretPassword',
-          db: _InternalRedis._db, // Defaults to 0
-        });
-        _InternalRedis._redisClient.on('ready', (t) => {
-          resolve(_InternalRedis._redisClient);
-        });
-        _InternalRedis._redisClient.on('error', (err) => {
-          reject(err);
-        });
-      }
-    });
+  static async establishConnection() {
+    if (!_InternalRedis._redisClient) {
+      _InternalRedis._redisClient = await _InternalRedis.createConnection();
+    }
+    return _InternalRedis._redisClient;
+  }
+
+  static getConnection() {
+    return _InternalRedis.establishConnection();
   }
 }
 
 export class Redis {
   static connect() {
     return _InternalRedis.establishConnection();
+  }
+
+  static getNewConnection() {
+    return _InternalRedis.createConnection();
   }
 
   static async set(key, value) {

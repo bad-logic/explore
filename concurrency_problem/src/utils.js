@@ -5,12 +5,12 @@ const shareInstance = Shares.getInstance();
 export function buySharesConcurrently(customer, shares) {
   return new Promise((resolve, reject) => {
     let counter = 0;
-    for (let i = 1; i <= 30; i++) {
+    for (let i = 1; i <= customer; i++) {
       shareInstance
-        .buy(`customer${i}`, 100)
+        .buy(`customer${i}`, shares)
         .then((_) => {
           counter++;
-          if (counter === 30) {
+          if (counter === customer) {
             return resolve('success');
           }
         })
@@ -25,12 +25,32 @@ export function buySharesConcurrently(customer, shares) {
 export function buySharesConcurrentlyWithRedisAtomicOperation(customer, shares) {
   return new Promise((resolve, reject) => {
     let counter = 0;
-    for (let i = 1; i <= 30; i++) {
+    for (let i = 1; i <= customer; i++) {
       shareInstance
-        .buyAtomically(`customer${i}`, 100)
+        .buyAtomically(`customer${i}`, shares)
         .then((_) => {
           counter++;
-          if (counter === 30) {
+          if (counter === customer) {
+            return resolve('success');
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          counter++;
+        });
+    }
+  });
+}
+
+export function buySharesConcurrentlyWithRedisTransactionOperation(customer, shares) {
+  return new Promise((resolve, reject) => {
+    let counter = 0;
+    for (let i = 1; i <= customer; i++) {
+      shareInstance
+        .buyUsingRedisTransaction(`customer${i}`, shares)
+        .then((_) => {
+          counter++;
+          if (counter === customer) {
             return resolve('success');
           }
         })

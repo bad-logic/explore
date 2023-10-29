@@ -2,6 +2,19 @@ import { ReplyError } from 'ioredis';
 import { Redis } from './redis.js';
 import { SHARES_KEY } from './constants.js';
 
+function sleep(timeInMillisecond) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve('delayed');
+    }, timeInMillisecond);
+  });
+}
+
+async function randomDelay() {
+  const random = Math.random() * 10000;
+  await sleep(random);
+}
+
 export class Shares {
   static _instance;
 
@@ -62,9 +75,50 @@ export class Shares {
 
     try {
       const conn = await Redis.getConnection();
+      /*
+      Since the LUA script is performed in the Redis server level and two scripts cannot run simultaneously, 
+      each buyer has to wait until it can proceed to get, validate and buy (if available) it’s shares 
+      thus solving the concurrency problem we were having.
+      */
       await conn.buyShares(SHARES_KEY, shares);
       console.info(`${customer} successfully bought ${shares} shares`);
     } catch (err) {
+      if (err instanceof ReplyError) {
+        throw new Error(`${customer}: not enough shares available`);
+      }
+      throw err;
+    }
+  }
+
+  async buyUsingMutexLocks(customer, shares) {
+    console.info(`${customer} attempts to buy ${shares} shares`);
+
+    try {
+      const conn = await Redis.getConnection();
+      // acquire mutex lock
+      const lockValue = new Date().getTime();
+      // you can also use ioredis to create and release locks
+      // since lua scripts are sequential and blocks other redis operations
+      const status = await conn.lockShares(lockValue);
+      if (status === 1) {
+        // continue operation and release the mutex lock
+        await this.buy(customer, shares);
+        await conn.releaseSharesLock(lockValue);
+      } else {
+        // cannot acquire mutex lock
+        // someone has it so wait it to be released and try again
+        console.info(`${customer}: shares are locked from purchasing ...Retrying`);
+        // retry or add logic to abandon operations after certain number of delays
+        await randomDelay();
+        try {
+          await this.buyUsingMutexLocks(customer, shares);
+        } catch (err) {
+          // ignoring for simplicity
+          return null;
+        }
+      }
+    } catch (err) {
+      console.log({ err, cmd: err.command });
       if (err instanceof ReplyError) {
         throw new Error(`${customer}: not enough shares available`);
       }

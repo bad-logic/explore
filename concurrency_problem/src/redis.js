@@ -1,5 +1,5 @@
 import { Redis as IORedis } from 'ioredis';
-
+import { LOCK_RELEASE_TIME, LOCK_NAME } from './constants.js';
 class _InternalRedis {
   static _redisClient;
   static _db = 1;
@@ -41,7 +41,58 @@ export class Redis {
     return conn;
   }
 
-  static _createLuaScripts(conn) {
+  static _lockSharesOpLuaScript(conn) {
+    conn.defineCommand('lockShares', {
+      numberOfKeys: 0,
+      lua: `
+        local lockValue = ARGV[1]
+
+        if redis.call("EXISTS", "${LOCK_NAME}") == 0 then
+          -- create mutex lock only if it already does not exists
+          redis.log(redis.LOG_DEBUG, 'adding a mutex lock with a value', lockValue)
+          redis.call("SET", "${LOCK_NAME}", lockValue, "PX", "${LOCK_RELEASE_TIME}")
+          return 1
+        else
+          -- if it already exists then someone is using the resource so mutex lock cannot be obtained
+          return 0
+        end
+      `,
+    });
+  }
+
+  static _releaseSharesOpLuaScript(conn) {
+    // release the lock only if the lockValue matches ensuring that the
+    // same entity can only release the lock
+    conn.defineCommand('releaseSharesLock', {
+      numberOfKeys: 0,
+      lua: `
+        local lockValue = ARGV[1]
+
+        -- make sure lock exists before releasing
+        if redis.call("EXISTS", "${LOCK_NAME}") == 1 then
+
+          -- make sure the right client is trying to release the lock
+          if redis.call("get", "${LOCK_NAME}") == lockValue then
+            redis.log(redis.LOG_DEBUG, 'removing a mutex lock with a value', lockValue)
+            redis.call("del", "${LOCK_NAME}")
+            return 1
+          else
+            redis.log(redis.LOG_WARNING, 'no mutex lock with a value', lockValue)
+            return 0
+          end
+
+        else
+          -- no lock found, implicitly lock has been released
+          -- lock was released before the operation could finish and unlock the mutex itself
+          -- if this happens look at the mutex lock expiry time
+          redis.log(redis.LOG_WARNING, 'expiration time is not enough for the operation to successfully release the lock')
+          return 1
+        end
+      `,
+    });
+  }
+
+  static _buySharesLuaScript(conn) {
     conn.defineCommand('buyShares', {
       numberOfKeys: 1,
       lua: `
@@ -50,6 +101,7 @@ export class Redis {
 
             local currentShares = redis.call("GET", sharesKey)
             if currentShares < requestedShares then
+              redis.log(redis.LOG_WARNING, 'not enough shares available')
               return {err = "error: not enough shares available"}
             end
 
@@ -57,6 +109,12 @@ export class Redis {
             redis.call("SET", sharesKey, currentShares)
       `,
     });
+  }
+
+  static _createLuaScripts(conn) {
+    Redis._buySharesLuaScript(conn);
+    Redis._lockSharesOpLuaScript(conn);
+    Redis._releaseSharesOpLuaScript(conn);
   }
 
   static async getConnection() {

@@ -7,6 +7,7 @@ import {
   buySharesConcurrentlyWithRedisAtomicOperation,
   buySharesConcurrentlyWithRedisTransactionOperation,
   buySharesConcurrentlyWithLuaScriptsInsideRedisServer,
+  buySharesConcurrentlyWithRedisLocks,
 } from './utils.js';
 import { TOTAL_SHARES, SHARES_KEY } from './constants.js';
 
@@ -39,6 +40,9 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 
         // USING LUA SCRIPTS
         await buySharesConcurrentlyWithLuaScriptsInsideRedisServer(30, 100);
+
+        // USING MUTEX LOCKS
+        // await buySharesConcurrentlyWithRedisLocks(30, 100);
 
         const totalSharesLeft = await Redis.get(SHARES_KEY);
         console.info({ totalShares: parseInt(totalSharesLeft) });

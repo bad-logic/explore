@@ -93,3 +93,26 @@ export function buySharesConcurrentlyWithLuaScriptsInsideRedisServer(customer, s
     }
   });
 }
+
+export function buySharesConcurrentlyWithRedisLocks(customer, shares) {
+  return new Promise((resolve, reject) => {
+    let counter = 0;
+    for (let i = 1; i <= customer; i++) {
+      shareInstance
+        .buyUsingMutexLocks(`customer${i}`, shares)
+        .then((_) => {
+          counter++;
+          if (counter === customer) {
+            return resolve('success');
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+          counter++;
+          if (counter === customer) {
+            return resolve('success');
+          }
+        });
+    }
+  });
+}

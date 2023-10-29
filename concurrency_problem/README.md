@@ -25,4 +25,4 @@ To address this issue number of solutions are tried:
 Both option 3 and 4 addresses this issues with different approaches.
 
 reference:
-https://blog.stackademic.com/solving-concurrency-problems-with-redis-and-golang-720e68b2b95a
+<a href="https://blog.stackademic.com/solving-concurrency-problems-with-redis-and-golang-720e68b2b95a" target="_blank">https://blog.stackademic.com/solving-concurrency-problems-with-redis-and-golang-720e68b2b95a</a>

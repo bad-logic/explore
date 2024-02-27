@@ -104,15 +104,6 @@ svg {
   display: block;
 }
 
-/* Inherit fonts for inputs and buttons */
-/* done above * {font:inherit} */
-/* input,
-button,
-textarea,
-select {
-  font: inherit;
-} */
-
 /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
 @media (prefers-reduced-motion: reduce) {
   html:focus-within {
@@ -274,23 +265,49 @@ body {
 /* Navigation */
 
 .primary-header {
-  margin-top: var(--size-600);
+  margin-top: var(--size-700);
+}
+
+.nav-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .mobile-nav-toggle {
-  cursor: pointer;
-  background: none;
-  border: 0;
-  padding: 0.5em;
-}
-
-.mobile-nav-toggle .icon-hamburger {
-}
-
-.mobile-nav-toggle .icon-close {
   display: none;
 }
 
-.display-sm-none {
-  display: none;
+@media (max-width: 50em) {
+  .primary-navigation {
+    display: none;
+    position: fixed;
+    inset: 7rem var(--size-400) auto;
+    background-color: var(--clr-neutral-900);
+    border-radius: var(--size-100);
+  }
+
+  .nav-list {
+    display: grid;
+    gap: var(--size-400);
+  }
+
+  .nav-list a {
+  }
+
+  .primary-navigation[data-visible] {
+    display: block;
+  }
+
+  .mobile-nav-toggle {
+    display: block;
+    cursor: pointer;
+    background: none;
+    border: 0;
+    padding: 0.5em;
+  }
+
+  .mobile-nav-toggle .icon-close {
+    display: none;
+  }
 }

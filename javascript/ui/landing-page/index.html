@@ -16,25 +16,27 @@
   <body>
     <header class="primary-header">
       <div class="container">
-        <a href="#">
-          <img src="./images/logo.svg" alt="Manage" />
-        </a>
-        <button class="mobile-nav-toggle" aria-controls="primary-navigation">
-          <img src="./images/icon-hamburger.svg" alt="icon-hamburger" class="icon-hamburger" aria-hidden="true" />
-          <img src="./images/icon-close.svg" alt="icon-close" class="icon-close" aria-hidden="true" />
-          <span class="sr-only">Menu</span>
-        </button>
+        <div class="nav-wrapper">
+          <a href="#">
+            <img src="./images/logo.svg" alt="Manage" />
+          </a>
+          <button class="mobile-nav-toggle" aria-controls="primary-navigation">
+            <img src="./images/icon-hamburger.svg" alt="icon-hamburger" class="icon-hamburger" aria-hidden="true" />
+            <img src="./images/icon-close.svg" alt="icon-close" class="icon-close" aria-hidden="true" />
+            <span class="sr-only">Menu</span>
+          </button>
 
-        <nav aria-label="primary-navigation" class="primary-navigation">
-          <ul role="list" class="nav-list" id="primary-navigation">
-            <li><a href="#">Pricing</a></li>
-            <li><a href="#">Product</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Careers</a></li>
-            <li><a href="#">Community</a></li>
-          </ul>
-        </nav>
-        <button class="button">Get Started</button>
+          <nav aria-label="primary-navigation" class="primary-navigation" id="primary-navigation" aria-expanded="false">
+            <ul role="list" class="nav-list">
+              <li><a href="#">Pricing</a></li>
+              <li><a href="#">Product</a></li>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Community</a></li>
+            </ul>
+          </nav>
+          <button class="button" style="display: none">Get Started</button>
+        </div>
       </div>
     </header>
     <main>

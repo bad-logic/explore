@@ -275,6 +275,46 @@ p[data-width="wide"] {
     opacity: .09;
 }
 
+/* Footer navigation */
+.primary-footer {
+    --logo-color: var(--clr-neutral-100);
+}
+
+.footer-nav {
+    columns: 2;
+}
+
+.footer-nav a {
+    color: var(--clr-neutral-100);
+    text-decoration: none;
+}
+
+.footer-nav a:is(:hover,:focus) {
+    color: var(--clr-accent-400);
+}
+
+/* Social lists */
+.social-list {
+    display: flex;
+    gap: var(--size-300);
+}
+
+.social-icon {
+    width: var(--size-600);
+    aspect-ratio: 1;
+    fill: var(--clr-neutral-100);
+}
+
+.social-list a:is(:hover,:focus) .social-icon {
+    fill: var(--clr-accent-400);
+}
+
+@media (min-width: 50em) {
+    .social-icon {
+        width: var(--size-500);
+    }
+}
+
 /* Utility classes */
 .sr-only {
     position: absolute;

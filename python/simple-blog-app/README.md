@@ -1,3 +1,5 @@
-# blog
-#Python#CRUD#Django
-Simple Blog Application Using Django
+# Simple Blog Application Using Django
+#### Python
+#### CRUD
+#### Django
+

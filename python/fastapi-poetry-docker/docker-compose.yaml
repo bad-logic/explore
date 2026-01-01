@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+  fastapi-service:
+    image: badlog/fastapi
+    container_name: fastapi-server-container
+    build:
+      context: ./
+    volumes:
+      - ./src:/usr/app/src
+    labels:
+      # enable traefik for this service
+      # exposing manually since exposedbydefault=false in docker-compose.traefik.yaml
+      - traefik.enable=true
+      # define the port inside of the docker service to use
+      - traefik.http.services.app.loadbalancer.server.port=5000
+      # make traefik use this domain in http
+      - traefik.http.routers.app-http.entrypoints=http
+      - traefik.http.routers.app-http.rule=Host(`yourdomain.com`)
+      # use the traefik public network
+      - traefik.docker.network=traefik-public
+
+      # HTTPS
+      # make traefik use this domain in https
+      - traefik.http.routers.app-https.entrypoints=https
+      - traefik.http.routers.app-https.rule=Host(`yourdomain.com`)
+      - traefik.http.routers.app-https.tls=true
+
+      # HTTPS CERTIFICATES
+      # use the "le" (Let's Encrypt) resolver
+      - traefik.http.routers.app-https.tls.certresolver=le
+      # https-redirect middleware to redirect http to https
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.middlewares.https-redirect.redirectscheme.permanent=true
+      # middleware to redirect http to https
+      - traefik.http.routers.app-http.middlewares=https-redirect
+
+      # reusing the basic auth middleware created in docker-compose.traefik file
+      - traefik.http.routers.app-https.middlewares=admin-auth
+    networks:
+      - traefik-public
+    restart: always
+
+networks:
+  traefik-public:
+    external: true

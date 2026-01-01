@@ -1,0 +1,9 @@
+<h1>Django Image Uploading</h1>
+<a href="/create-album">create Album</a>
+<h2>Albums from the database</h2>
+<ul>
+    {% for key,value in display.items %}
+    <h2>{{ key }}</h2>
+    {% for image in value %}
+    <img src="{{ image }}" alt="{{ key }}" height="200" width="150"> {% endfor %} {% endfor %}
+</ul>

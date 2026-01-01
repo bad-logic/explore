@@ -1,0 +1,18 @@
+{
+"FirstName": "Foo",
+"LastName": "Bar",
+"Email": "foo.bar@xyz.com",
+"Age": 34,
+"MonthlySalary": [
+{
+"Basic": 4594.89,
+"HRA": 1235.008,
+"TA": 456.87
+},
+{
+"Basic": 45394.89,
+"HRA": 1435.008,
+"TA": 1456.87
+}
+]
+}

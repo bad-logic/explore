@@ -10,5 +10,5 @@ command:
 - npm run server 
 - npm run client
 
-![app Image](/image/todo.png)
+![app Image](./image/todo.png)
 
